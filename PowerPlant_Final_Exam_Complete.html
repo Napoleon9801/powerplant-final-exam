@@ -178,11 +178,47 @@ MathJax = {
   .checklist li::before { content: "□"; position: absolute; left: 0; color: var(--gold); font-size: 1rem; }
   /* DIVIDER */
   hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  /* EXAM ANSWER SHEET */
+  .exam-answer {
+    background: #fffdf5;
+    border: 2px dashed var(--gold);
+    border-radius: 8px;
+    padding: 22px 28px;
+    margin: 20px 0;
+    font-family: 'Sarabun', 'Noto Sans Thai', 'Georgia', serif;
+    line-height: 1.9;
+    position: relative;
+  }
+  .exam-answer::before {
+    content: "📝 วิธีตอบ (สำหรับเขียนลงกระดาษคำตอบ)";
+    position: absolute; top: -12px; left: 18px;
+    background: var(--gold); color: white;
+    padding: 3px 14px; border-radius: 12px;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .exam-answer h5 {
+    color: var(--dark); font-size: 0.95rem;
+    margin: 14px 0 6px; padding-bottom: 4px;
+    border-bottom: 1px solid var(--gold-light);
+  }
+  .exam-answer h5:first-of-type { margin-top: 8px; }
+  .exam-answer .line { margin: 4px 0; font-size: 0.92rem; }
+  .exam-answer .ans {
+    display: inline-block; padding: 2px 10px;
+    background: var(--dark); color: var(--gold);
+    border-radius: 4px; font-weight: 700;
+    font-family: 'Cambria Math', 'STIX Two Math', serif;
+  }
+  .exam-answer .formula-line {
+    font-style: italic; color: var(--blue); font-size: 0.9rem;
+  }
   /* PRINT */
   @media print {
     nav { display: none; }
     main { margin-left: 0; padding: 20px; }
     section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .exam-answer { break-inside: avoid; }
   }
 </style>
 </head>
@@ -488,6 +524,31 @@ MathJax = {
 
   <div class="warn">
     <strong>ผลลัพธ์ Priority อาจต่างกัน</strong> ขึ้นกับว่าใช้ $P_{\max}$, $P_{\text{avg}}$, หรือ $P_{\min}$ — ตัวอย่างนี้ที่ P_min ลำดับเปลี่ยนเป็น 3→1→2 อ่านโจทย์ให้ชัดก่อนเสมอ
+  </div>
+
+  <div class="exam-answer">
+    <h5>ขั้นที่ 1 — คำนวณ F(P<sub>max</sub>) ของแต่ละ unit</h5>
+    <div class="line">F₁(600) = 510 + 7.2(600) + 0.00142(600)² = 510 + 4320 + 511.2 = <span class="ans">5341.2 ฿/h</span></div>
+    <div class="line">F₂(400) = 310 + 7.85(400) + 0.00194(400)² = 310 + 3140 + 310.4 = <span class="ans">3760.4 ฿/h</span></div>
+    <div class="line">F₃(200) = 78 + 7.97(200) + 0.00482(200)² = 78 + 1594 + 192.8 = <span class="ans">1864.8 ฿/h</span></div>
+
+    <h5>ขั้นที่ 2 — คำนวณ Priority Index σᵢ = F(P<sub>max</sub>) / P<sub>max</sub></h5>
+    <div class="line">σ₁ = 5341.2 / 600 = <span class="ans">8.90 ฿/MWh</span></div>
+    <div class="line">σ₂ = 3760.4 / 400 = <span class="ans">9.40 ฿/MWh</span></div>
+    <div class="line">σ₃ = 1864.8 / 200 = <span class="ans">9.32 ฿/MWh</span></div>
+
+    <h5>ขั้นที่ 3 — เรียงลำดับจาก σ น้อยไปมาก</h5>
+    <div class="line">σ₁ (8.90) &lt; σ₃ (9.32) &lt; σ₂ (9.40)</div>
+    <div class="line">∴ <span class="ans">Priority List = Unit 1 → Unit 3 → Unit 2</span></div>
+
+    <h5>ขั้นที่ 4 — ตาราง Unit Commitment</h5>
+    <div class="line">State c: เปิด Unit 1 → Min = 150 MW, Max = 600 MW</div>
+    <div class="line">State b: เปิด Unit 1+3 → Min = 600 MW (= Max ของ c), Max = 600+200 = 800 MW</div>
+    <div class="line">State a: เปิด Unit 1+3+2 → Min = 800 MW (= Max ของ b), Max = 600+200+400 = 1200 MW</div>
+
+    <h5>สรุปคำตอบ</h5>
+    <div class="line">• Priority List: <strong>Unit 1 → Unit 3 → Unit 2</strong> (เพราะ σ₁ &lt; σ₃ &lt; σ₂)</div>
+    <div class="line">• Unit Commitment: โหลด ≤ 600 → state c | 600-800 → state b | 800-1200 → state a</div>
   </div>
 </section>
 
