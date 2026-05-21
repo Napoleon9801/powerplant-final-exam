@@ -528,27 +528,22 @@ MathJax = {
 
   <div class="exam-answer">
     <h5>ขั้นที่ 1 — คำนวณ F(P<sub>max</sub>) ของแต่ละ unit</h5>
-    <div class="line">F₁(600) = 510 + 7.2(600) + 0.00142(600)² = 510 + 4320 + 511.2 = <span class="ans">5341.2 ฿/h</span></div>
-    <div class="line">F₂(400) = 310 + 7.85(400) + 0.00194(400)² = 310 + 3140 + 310.4 = <span class="ans">3760.4 ฿/h</span></div>
-    <div class="line">F₃(200) = 78 + 7.97(200) + 0.00482(200)² = 78 + 1594 + 192.8 = <span class="ans">1864.8 ฿/h</span></div>
+    <div class="line">F₁(600) = α₁ + β₁P₁ + γ₁P₁² = 510 + 7.2(600) + 0.00142(600)² = <span class="ans">5341.2 ฿/h</span></div>
+    <div class="line">F₂(400) = α₂ + β₂P₂ + γ₂P₂² = 310 + 7.85(400) + 0.00194(400)² = <span class="ans">3760.4 ฿/h</span></div>
+    <div class="line">F₃(200) = α₃ + β₃P₃ + γ₃P₃² = 78 + 7.97(200) + 0.00482(200)² = <span class="ans">1864.8 ฿/h</span></div>
 
-    <h5>ขั้นที่ 2 — คำนวณ Priority Index σᵢ = F(P<sub>max</sub>) / P<sub>max</sub></h5>
-    <div class="line">σ₁ = 5341.2 / 600 = <span class="ans">8.90 ฿/MWh</span></div>
-    <div class="line">σ₂ = 3760.4 / 400 = <span class="ans">9.40 ฿/MWh</span></div>
-    <div class="line">σ₃ = 1864.8 / 200 = <span class="ans">9.32 ฿/MWh</span></div>
+    <h5>ขั้นที่ 2 — คำนวณ Priority Index σᵢ</h5>
+    <div class="line">σ₁ = F₁(P<sub>1,max</sub>) / P<sub>1,max</sub> = 5341.2 / 600 = <span class="ans">8.90 ฿/MWh</span></div>
+    <div class="line">σ₂ = F₂(P<sub>2,max</sub>) / P<sub>2,max</sub> = 3760.4 / 400 = <span class="ans">9.40 ฿/MWh</span></div>
+    <div class="line">σ₃ = F₃(P<sub>3,max</sub>) / P<sub>3,max</sub> = 1864.8 / 200 = <span class="ans">9.32 ฿/MWh</span></div>
 
     <h5>ขั้นที่ 3 — เรียงลำดับจาก σ น้อยไปมาก</h5>
-    <div class="line">σ₁ (8.90) &lt; σ₃ (9.32) &lt; σ₂ (9.40)</div>
-    <div class="line">∴ <span class="ans">Priority List = Unit 1 → Unit 3 → Unit 2</span></div>
+    <div class="line">σ₁ (8.90) &lt; σ₃ (9.32) &lt; σ₂ (9.40) ∴ <span class="ans">Priority List = Unit 1 → Unit 3 → Unit 2</span></div>
 
-    <h5>ขั้นที่ 4 — ตาราง Unit Commitment</h5>
-    <div class="line">State c: เปิด Unit 1 → Min = 150 MW, Max = 600 MW</div>
-    <div class="line">State b: เปิด Unit 1+3 → Min = 600 MW (= Max ของ c), Max = 600+200 = 800 MW</div>
-    <div class="line">State a: เปิด Unit 1+3+2 → Min = 800 MW (= Max ของ b), Max = 600+200+400 = 1200 MW</div>
-
-    <h5>สรุปคำตอบ</h5>
-    <div class="line">• Priority List: <strong>Unit 1 → Unit 3 → Unit 2</strong> (เพราะ σ₁ &lt; σ₃ &lt; σ₂)</div>
-    <div class="line">• Unit Commitment: โหลด ≤ 600 → state c | 600-800 → state b | 800-1200 → state a</div>
+    <h5>ขั้นที่ 4 — ตาราง Unit Commitment (เพิ่ม unit ตามลำดับ Priority)</h5>
+    <div class="line">State c: Unit 1 → Min = P<sub>1,min</sub> = <span class="ans">150 MW</span>, Max = P<sub>1,max</sub> = <span class="ans">600 MW</span></div>
+    <div class="line">State b: Unit 1+3 → Min = Max(c) = <span class="ans">600 MW</span>, Max = P<sub>1,max</sub>+P<sub>3,max</sub> = 600+200 = <span class="ans">800 MW</span></div>
+    <div class="line">State a: Unit 1+3+2 → Min = Max(b) = <span class="ans">800 MW</span>, Max = 600+200+400 = <span class="ans">1200 MW</span></div>
   </div>
 </section>
 
@@ -655,22 +650,18 @@ MathJax = {
 
   <div class="exam-answer">
     <h5>(ก) ระบบ 2 Area</h5>
-    <div class="line"><strong>คำนวณ Δf:</strong> Δf = f − f<sub>nom</sub> = 49.95 − 50 = <span class="ans">−0.05 Hz</span></div>
-    <div class="line"><strong>คำนวณ ΔP<sub>tie</sub>:</strong></div>
-    <div class="line">&nbsp;&nbsp;ΔP<sub>tie,1</sub> = P<sub>actual</sub> − P<sub>sched</sub> = 260 − 300 = <span class="ans">−40 MW</span></div>
-    <div class="line">&nbsp;&nbsp;ΔP<sub>tie,2</sub> = −ΔP<sub>tie,1</sub> = <span class="ans">+40 MW</span></div>
-    <div class="line"><strong>คำนวณ ACE = ΔP<sub>tie</sub> + B·Δf:</strong></div>
-    <div class="line">&nbsp;&nbsp;ACE₁ = −40 + 400(−0.05) = −40 − 20 = <span class="ans">−60 MW</span> → ACE&lt;0 ∴ เพิ่ม Gen ↑</div>
-    <div class="line">&nbsp;&nbsp;ACE₂ = +40 + 350(−0.05) = +40 − 17.5 = <span class="ans">+22.5 MW</span> → ACE&gt;0 ∴ ลด Gen ↓</div>
+    <div class="line">Δf = f − f<sub>nom</sub> = 49.95 − 50 = <span class="ans">−0.05 Hz</span></div>
+    <div class="line">ΔP<sub>tie,1</sub> = P<sub>actual</sub> − P<sub>sched</sub> = 260 − 300 = <span class="ans">−40 MW</span></div>
+    <div class="line">ΔP<sub>tie,2</sub> = −ΔP<sub>tie,1</sub> = −(−40) = <span class="ans">+40 MW</span></div>
+    <div class="line">ACE₁ = ΔP<sub>tie,1</sub> + B₁·Δf = (−40) + 400(−0.05) = <span class="ans">−60 MW</span> → ACE&lt;0 ∴ เพิ่ม Gen ↑</div>
+    <div class="line">ACE₂ = ΔP<sub>tie,2</sub> + B₂·Δf = (+40) + 350(−0.05) = <span class="ans">+22.5 MW</span> → ACE&gt;0 ∴ ลด Gen ↓</div>
 
     <h5>(ข) ระบบ 3 Area</h5>
-    <div class="line"><strong>คำนวณ Δf:</strong> Δf = 49.94 − 50 = <span class="ans">−0.06 Hz</span></div>
-    <div class="line"><strong>ตรวจสมดุล tie-line (ΣΔP<sub>tie</sub> = 0):</strong></div>
-    <div class="line">&nbsp;&nbsp;ΣΔP<sub>tie</sub> = −40 + 10 + 30 = <span class="ans">0 ✓</span> (ข้อมูลถูกต้อง)</div>
-    <div class="line"><strong>คำนวณ ACE แต่ละพื้นที่:</strong></div>
-    <div class="line">&nbsp;&nbsp;ACE<sub>A</sub> = −40 + 300(−0.06) = −40 − 18 = <span class="ans">−58 MW</span> → เพิ่ม Gen ↑</div>
-    <div class="line">&nbsp;&nbsp;ACE<sub>B</sub> = +10 + 250(−0.06) = +10 − 15 = <span class="ans">−5 MW</span> → ≈0 ใกล้สมดุล</div>
-    <div class="line">&nbsp;&nbsp;ACE<sub>C</sub> = +30 + 200(−0.06) = +30 − 12 = <span class="ans">+18 MW</span> → ลด Gen ↓</div>
+    <div class="line">Δf = f − f<sub>nom</sub> = 49.94 − 50 = <span class="ans">−0.06 Hz</span></div>
+    <div class="line">ΣΔP<sub>tie</sub> = ΔP<sub>A</sub> + ΔP<sub>B</sub> + ΔP<sub>C</sub> = (−40) + (+10) + (+30) = <span class="ans">0 ✓</span> (สมดุล)</div>
+    <div class="line">ACE<sub>A</sub> = ΔP<sub>tie,A</sub> + B<sub>A</sub>·Δf = (−40) + 300(−0.06) = <span class="ans">−58 MW</span> → เพิ่ม Gen ↑</div>
+    <div class="line">ACE<sub>B</sub> = ΔP<sub>tie,B</sub> + B<sub>B</sub>·Δf = (+10) + 250(−0.06) = <span class="ans">−5 MW</span> → ≈0 ใกล้สมดุล</div>
+    <div class="line">ACE<sub>C</sub> = ΔP<sub>tie,C</sub> + B<sub>C</sub>·Δf = (+30) + 200(−0.06) = <span class="ans">+18 MW</span> → ลด Gen ↓</div>
   </div>
 </section>
 
@@ -890,27 +881,24 @@ F1─●            ●─F2
 
   <div class="exam-answer">
     <h5>ข้อมูลทั่วไป — 70 kg → K = 0.157, ρ<sub>E</sub> = 100 Ω·m, t<sub>s</sub> = 1.0 s</h5>
-    <div class="line"><strong>สูตร:</strong> E<sub>touch</sub> = (1000 + 1.5·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> &nbsp;|&nbsp; E<sub>step</sub> = (1000 + 6·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub></div>
-    <div class="line"><strong>สูตร C<sub>s</sub>:</strong> C<sub>s</sub> = 1 − (1 − ρ<sub>E</sub>/ρ<sub>s</sub>)/(1 + 22.22·h<sub>s</sub>)</div>
 
     <h5>กรณี ก — ไม่มีวัสดุปูพื้น (C<sub>s</sub> = 1, ρ<sub>s</sub> = ρ<sub>E</sub> = 100)</h5>
-    <div class="line">E<sub>touch</sub> = (1000 + 1.5·1·100)(0.157/√1) = 1150 × 0.157 = <span class="ans">180.6 V</span></div>
-    <div class="line">E<sub>step</sub> = (1000 + 6·1·100)(0.157/√1) = 1600 × 0.157 = <span class="ans">251.2 V</span></div>
+    <div class="line">E<sub>touch</sub> = (1000 + 1.5·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 1.5·1·100)·0.157/√1 = <span class="ans">180.6 V</span></div>
+    <div class="line">E<sub>step</sub> = (1000 + 6·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 6·1·100)·0.157/√1 = <span class="ans">251.2 V</span></div>
 
     <h5>กรณี ข — หินบด h<sub>s</sub> = 0.1 m, ρ<sub>s</sub> = 3000 Ω·m</h5>
-    <div class="line">C<sub>s</sub> = 1 − (1 − 100/3000)/(1 + 22.22·0.1) = 1 − 0.9667/3.222 = <span class="ans">0.700</span></div>
-    <div class="line">E<sub>touch</sub> = (1000 + 1.5·0.7·3000)(0.157) = 4150 × 0.157 = <span class="ans">651.6 V</span></div>
-    <div class="line">E<sub>step</sub> = (1000 + 6·0.7·3000)(0.157) = 13600 × 0.157 = <span class="ans">2135.2 V</span></div>
+    <div class="line">C<sub>s</sub> = 1 − (1 − ρ<sub>E</sub>/ρ<sub>s</sub>)/(1 + 22.22·h<sub>s</sub>) = 1 − (1 − 100/3000)/(1 + 22.22·0.1) = <span class="ans">0.700</span></div>
+    <div class="line">E<sub>touch</sub> = (1000 + 1.5·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 1.5·0.7·3000)·0.157/√1 = <span class="ans">651.6 V</span></div>
+    <div class="line">E<sub>step</sub> = (1000 + 6·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 6·0.7·3000)·0.157/√1 = <span class="ans">2135.2 V</span></div>
 
     <h5>กรณี ค — ยางมะตอย h<sub>s</sub> = 0.05 m, ρ<sub>s</sub> = 10000 Ω·m</h5>
-    <div class="line">C<sub>s</sub> = 1 − (1 − 100/10000)/(1 + 22.22·0.05) = 1 − 0.990/2.111 = <span class="ans">0.531</span></div>
-    <div class="line">E<sub>touch</sub> = (1000 + 1.5·0.531·10000)(0.157) = 8965 × 0.157 = <span class="ans">1407.5 V</span></div>
-    <div class="line">E<sub>step</sub> = (1000 + 6·0.531·10000)(0.157) = 32860 × 0.157 = <span class="ans">5159.0 V</span></div>
+    <div class="line">C<sub>s</sub> = 1 − (1 − ρ<sub>E</sub>/ρ<sub>s</sub>)/(1 + 22.22·h<sub>s</sub>) = 1 − (1 − 100/10000)/(1 + 22.22·0.05) = <span class="ans">0.531</span></div>
+    <div class="line">E<sub>touch</sub> = (1000 + 1.5·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 1.5·0.531·10000)·0.157/√1 = <span class="ans">1407.5 V</span></div>
+    <div class="line">E<sub>step</sub> = (1000 + 6·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 6·0.531·10000)·0.157/√1 = <span class="ans">5159.0 V</span></div>
 
-    <h5>สรุปการตัดสิน Safety</h5>
+    <h5>การตัดสิน Safety</h5>
     <div class="line">เปรียบเทียบ E<sub>measured</sub> (จากการวัดในสถานี) กับ E<sub>allowable</sub> ที่คำนวณได้:</div>
-    <div class="line">• ถ้า E<sub>measured</sub> ≤ E<sub>allowable</sub> → <span class="ans">SAFE ✓</span></div>
-    <div class="line">• ถ้า E<sub>measured</sub> &gt; E<sub>allowable</sub> → <span class="ans">UNSAFE ✗</span> (ต้องปรับปรุง Ground Grid)</div>
+    <div class="line">ถ้า E<sub>measured</sub> ≤ E<sub>allowable</sub> → <span class="ans">SAFE ✓</span> &nbsp;|&nbsp; ถ้า E<sub>measured</sub> &gt; E<sub>allowable</sub> → <span class="ans">UNSAFE ✗</span> (ต้องปรับปรุง)</div>
   </div>
 </section>
 
@@ -1017,25 +1005,23 @@ F1─●            ●─F2
     <div class="line">ρ<sub>E</sub> = 400 Ω·m | กริด 70×70 m, 11 เส้นแนวนอน + 11 เส้นแนวตั้ง | Rod 20 แท่ง × 7.5 m | h = 0.5 m</div>
 
     <h5>ขั้นที่ 1 — คำนวณ L<sub>T</sub> (ความยาวรวม)</h5>
-    <div class="line">L<sub>grid</sub> = 11×70 + 11×70 = 770 + 770 = 1540 m</div>
-    <div class="line">L<sub>rod</sub> = 20 × 7.5 = 150 m</div>
-    <div class="line">L<sub>T</sub> = 1540 + 150 = <span class="ans">1690 m</span></div>
+    <div class="line">L<sub>grid</sub> = n<sub>h</sub>·W + n<sub>v</sub>·L = 11(70) + 11(70) = <span class="ans">1540 m</span></div>
+    <div class="line">L<sub>rod</sub> = N<sub>rod</sub>·L<sub>rod</sub> = 20(7.5) = <span class="ans">150 m</span></div>
+    <div class="line">L<sub>T</sub> = L<sub>grid</sub> + L<sub>rod</sub> = 1540 + 150 = <span class="ans">1690 m</span></div>
 
     <h5>ขั้นที่ 2 — คำนวณ A (พื้นที่กริด)</h5>
-    <div class="line">A = 70 × 70 = <span class="ans">4900 m²</span></div>
+    <div class="line">A = W × L = 70 × 70 = <span class="ans">4900 m²</span></div>
 
     <h5>ขั้นที่ 3 — คำนวณ Term ย่อยในสูตร Sverak</h5>
-    <div class="line">√(20A) = √(20 × 4900) = √98000 = <span class="ans">313.05</span></div>
+    <div class="line">√(20A) = √(20·4900) = √98000 = <span class="ans">313.05</span></div>
     <div class="line">√(20/A) = √(20/4900) = <span class="ans">0.06389</span></div>
-    <div class="line">h·√(20/A) = 0.5 × 0.06389 = 0.03195</div>
-    <div class="line">1/(1 + h·√(20/A)) = 1/1.03195 = <span class="ans">0.9691</span></div>
+    <div class="line">1 + h·√(20/A) = 1 + 0.5(0.06389) = 1.03195 ; 1/(1+h√(20/A)) = <span class="ans">0.9691</span></div>
 
-    <h5>ขั้นที่ 4 — แทนสูตร Sverak: R<sub>G</sub> = ρ<sub>E</sub>·[1/L<sub>T</sub> + (1/√20A)·(1 + 1/(1+h√(20/A)))]</h5>
-    <div class="line">R<sub>G</sub> = 400 × [1/1690 + (1/313.05)·(1 + 0.9691)]</div>
-    <div class="line">&nbsp;&nbsp; = 400 × [5.917×10⁻⁴ + 3.194×10⁻³ × 1.969]</div>
-    <div class="line">&nbsp;&nbsp; = 400 × [5.917×10⁻⁴ + 6.292×10⁻³]</div>
-    <div class="line">&nbsp;&nbsp; = 400 × 6.884×10⁻³</div>
-    <div class="line">∴ <span class="ans">R<sub>G</sub> ≈ 2.75 Ω</span></div>
+    <h5>ขั้นที่ 4 — แทนสูตร Sverak</h5>
+    <div class="line">R<sub>G</sub> = ρ<sub>E</sub>·[1/L<sub>T</sub> + (1/√20A)·(1 + 1/(1+h√(20/A)))]</div>
+    <div class="line">&nbsp;&nbsp;= 400·[1/1690 + (1/313.05)·(1 + 0.9691)]</div>
+    <div class="line">&nbsp;&nbsp;= 400·[5.917×10⁻⁴ + 3.194×10⁻³(1.969)]</div>
+    <div class="line">&nbsp;&nbsp;= 400·[5.917×10⁻⁴ + 6.292×10⁻³] = 400(6.884×10⁻³) = <span class="ans">2.75 Ω</span></div>
 
     <h5>การตัดสิน</h5>
     <div class="line">เกณฑ์ IEEE: สถานีขนาดเล็ก R<sub>G</sub> ≤ 5 Ω → ค่าที่ได้ <strong>ยอมรับได้ ✓</strong></div>
@@ -1209,25 +1195,27 @@ F1─●            ●─F2
   <div class="note">ในข้อสอบถ้าให้ออกแบบทั้งระบบ → ทำ Feeder ก่อน → บวก margin 0.2s → ได้ trip time Transformer และ Incoming</div>
 
   <div class="exam-answer">
-    <h5>(ก) ตัวอย่าง SI Curve — Feeder 20 MVA, 115 kV, I<sub>fault</sub> = 2000 A, TMS = 0.1</h5>
-    <div class="line"><strong>ขั้น 1 — I<sub>load</sub>:</strong> I<sub>load</sub> = S/(√3·V) = 20×10⁶ / (√3·115×10³) = <span class="ans">100 A</span></div>
-    <div class="line"><strong>ขั้น 2 — CTR:</strong> โจทย์ให้ CT = 600/5 → CTR = 120 ; I<sub>load,sec</sub> = 100/120 = <span class="ans">0.83 A</span></div>
-    <div class="line"><strong>ขั้น 3 — I<sub>p</sub>:</strong> I<sub>p,primary</sub> = 1.25 × 100 = <span class="ans">125 A</span></div>
-    <div class="line"><strong>ขั้น 4 — PSM:</strong> PSM = I<sub>fault</sub>/I<sub>p</sub> = 2000/125 = <span class="ans">16</span></div>
-    <div class="line"><strong>ขั้น 5 — T (SI):</strong> 16<sup>0.02</sup> = 1.0570</div>
-    <div class="line">&nbsp;&nbsp;T = TMS × 0.14/(PSM<sup>0.02</sup>−1) = 0.1 × 0.14/0.0570 = <span class="ans">0.246 s ≈ 0.25 s</span></div>
+    <h5>(ก) ตัวอย่าง SI Curve — Feeder 20 MVA, 115 kV, CT=600/5, I<sub>fault</sub>=2000 A, TMS=0.1</h5>
+    <div class="line">I<sub>load</sub> = S / (√3·V) = (20×10⁶) / (√3 · 115×10³) = <span class="ans">100 A</span></div>
+    <div class="line">CTR = (CT primary) / (CT secondary) = 600/5 = <span class="ans">120</span></div>
+    <div class="line">I<sub>load,sec</sub> = I<sub>load</sub> / CTR = 100/120 = <span class="ans">0.83 A</span></div>
+    <div class="line">I<sub>p,primary</sub> = K · I<sub>load</sub> = 1.25(100) = <span class="ans">125 A</span></div>
+    <div class="line">PSM = I<sub>fault</sub> / I<sub>p</sub> = 2000/125 = <span class="ans">16</span></div>
+    <div class="line">T = TMS · 0.14/(PSM<sup>0.02</sup>−1) = 0.1 · 0.14/(16<sup>0.02</sup>−1) = 0.1·0.14/0.0570 = <span class="ans">0.246 s ≈ 0.25 s</span></div>
 
-    <h5>(ข) ตัวอย่าง VI Curve — I<sub>load</sub> = 200 A, I<sub>fault</sub> = 2000 A, ต้องการ T = 0.4 s</h5>
-    <div class="line"><strong>ขั้น 2 — CTR:</strong> 200/5 = 40 → CTR = 200/5 ; I<sub>load,sec</sub> = 200/40 = <span class="ans">5 A</span></div>
-    <div class="line"><strong>ขั้น 3 — I<sub>p</sub>:</strong> 1.25 × 5 = 6.25 A → เลือก tap 125% = <span class="ans">6.25 A</span></div>
-    <div class="line"><strong>ขั้น 4 — PSM:</strong> I<sub>fault,sec</sub> = 2000/40 = 50 A ; PSM = 50/6.25 = <span class="ans">8.0</span> (≥2 ✓ Sensitive)</div>
-    <div class="line"><strong>ขั้น 5 — หา TMS:</strong> TMS = T × (PSM−1)/13.5 = 0.4 × 7/13.5 = 0.207 → เลือก <span class="ans">TMS = 0.2</span></div>
-    <div class="line">&nbsp;&nbsp;ตรวจ: T = 0.2 × 13.5/(8−1) = 0.2 × 1.929 = <span class="ans">0.386 s ≈ 0.4 s ✓</span></div>
+    <h5>(ข) ตัวอย่าง VI Curve — I<sub>load</sub>=200 A, I<sub>fault</sub>=2000 A, ต้องการ T=0.4 s</h5>
+    <div class="line">CTR = I<sub>load</sub>/5 = 200/5 = <span class="ans">40</span></div>
+    <div class="line">I<sub>load,sec</sub> = I<sub>load</sub>/CTR = 200/40 = <span class="ans">5 A</span></div>
+    <div class="line">I<sub>p</sub> = K · I<sub>load,sec</sub> = 1.25(5) = 6.25 A → เลือก tap 125% = <span class="ans">6.25 A</span></div>
+    <div class="line">I<sub>fault,sec</sub> = I<sub>fault</sub>/CTR = 2000/40 = <span class="ans">50 A</span></div>
+    <div class="line">PSM = I<sub>fault,sec</sub>/I<sub>p</sub> = 50/6.25 = <span class="ans">8.0</span> (≥2 ✓ Sensitive)</div>
+    <div class="line">TMS = T·(PSM−1)/13.5 = 0.4·(8−1)/13.5 = <span class="ans">0.207 ≈ 0.2</span></div>
+    <div class="line">ตรวจ: T = TMS·13.5/(PSM−1) = 0.2·13.5/(8−1) = 0.2(1.929) = <span class="ans">0.386 s ≈ 0.4 s ✓</span></div>
 
-    <h5>(ค) Protection Coordination — margin 0.2 s/zone</h5>
-    <div class="line">Feeder (R6, R7): T = <span class="ans">0.2 s</span>, TMS ≈ 0.10</div>
-    <div class="line">Transformer backup (R4, R5): T = 0.2 + 0.2 = <span class="ans">0.4 s</span>, TMS ≈ 0.25</div>
-    <div class="line">Incoming backup (R1): T = 0.4 + 0.2 = <span class="ans">0.6 s</span>, TMS ≈ 0.45</div>
+    <h5>(ค) Protection Coordination — margin Δt = 0.2 s ต่อ zone</h5>
+    <div class="line">T<sub>Feeder</sub> = T<sub>min</sub> = <span class="ans">0.2 s</span> (TMS ≈ 0.10)</div>
+    <div class="line">T<sub>Transformer</sub> = T<sub>Feeder</sub> + Δt = 0.2 + 0.2 = <span class="ans">0.4 s</span> (TMS ≈ 0.25)</div>
+    <div class="line">T<sub>Incoming</sub> = T<sub>Transformer</sub> + Δt = 0.4 + 0.2 = <span class="ans">0.6 s</span> (TMS ≈ 0.45)</div>
     <div class="line"><strong>หลัก:</strong> Fault → Feeder ตัดก่อน (เร็วสุด) → ถ้า fail → Transformer backup → ถ้า fail อีก → Incoming เป็น last resort</div>
   </div>
 </section>
