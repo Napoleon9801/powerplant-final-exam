@@ -344,6 +344,47 @@ MathJax = {
     </div>
   </div>
 
+  <div class="example" style="border-color:var(--blue);background:#f0f7ff">
+    <div class="ex-title" style="color:var(--blue)">เพิ่มเติม — ตาราง σ ที่ 3 จุด (ตามสไลด์อาจารย์ Page 40)</div>
+
+    <p style="font-size:0.9rem">โจทย์อาจสั่งให้ใช้จุด test ต่างกัน ลองคำนวณครบทั้ง <strong>P_max / P_avg / P_min</strong> เพื่อเห็นภาพรวม</p>
+
+    <h4>หา P_avg ของแต่ละ unit</h4>
+    $$P_{\text{avg},1} = \frac{150+600}{2} = 375\text{ MW}, \quad P_{\text{avg},2} = \frac{100+400}{2} = 250\text{ MW}, \quad P_{\text{avg},3} = \frac{50+200}{2} = 125\text{ MW}$$
+
+    <h4>คำนวณ F และ σ ที่ 3 จุด</h4>
+    <table>
+      <tr><th>Unit</th><th>P_test (MW)</th><th>F(P_test) (฿/h)</th><th>σ = F/P (฿/MWh)</th></tr>
+      <tr style="background:#fff8e1"><td rowspan="3"><strong>1</strong></td><td>P_min = 150</td><td>$510+7.2(150)+0.00142(150)^2 = 1621.95$</td><td>1621.95/150 = <strong>10.81</strong></td></tr>
+      <tr style="background:#fff8e1"><td>P_avg = 375</td><td>$510+7.2(375)+0.00142(375)^2 = 3409.69$</td><td>3409.69/375 = <strong>9.09</strong></td></tr>
+      <tr style="background:#fff8e1"><td>P_max = 600</td><td>$5341.2$</td><td>5341.2/600 = <strong>8.90</strong></td></tr>
+      <tr><td rowspan="3"><strong>2</strong></td><td>P_min = 100</td><td>$310+7.85(100)+0.00194(100)^2 = 1114.4$</td><td>1114.4/100 = <strong>11.14</strong></td></tr>
+      <tr><td>P_avg = 250</td><td>$310+7.85(250)+0.00194(250)^2 = 2393.75$</td><td>2393.75/250 = <strong>9.58</strong></td></tr>
+      <tr><td>P_max = 400</td><td>$3760.4$</td><td>3760.4/400 = <strong>9.40</strong></td></tr>
+      <tr style="background:#fff8e1"><td rowspan="3"><strong>3</strong></td><td>P_min = 50</td><td>$78+7.97(50)+0.00482(50)^2 = 488.55$</td><td>488.55/50 = <strong>9.77</strong></td></tr>
+      <tr style="background:#fff8e1"><td>P_avg = 125</td><td>$78+7.97(125)+0.00482(125)^2 = 1149.56$</td><td>1149.56/125 = <strong>9.20</strong></td></tr>
+      <tr style="background:#fff8e1"><td>P_max = 200</td><td>$1864.8$</td><td>1864.8/200 = <strong>9.32</strong></td></tr>
+    </table>
+
+    <h4>สรุป σ และ Priority List ที่ 3 จุด</h4>
+    <table>
+      <tr><th>Unit</th><th>σ @ P_max</th><th>σ @ P_avg</th><th>σ @ P_min</th></tr>
+      <tr><td><strong>1</strong></td><td style="background:#d4edda"><strong>8.90 ★</strong></td><td style="background:#d4edda"><strong>9.09 ★</strong></td><td>10.81</td></tr>
+      <tr><td><strong>2</strong></td><td>9.40</td><td>9.58</td><td>11.14</td></tr>
+      <tr><td><strong>3</strong></td><td>9.32</td><td>9.20</td><td style="background:#d4edda"><strong>9.77 ★</strong></td></tr>
+      <tr style="background:var(--dark);color:var(--gold);font-weight:700">
+        <td style="color:var(--gold)">Priority List (PL)</td>
+        <td style="color:var(--gold)">1 → 3 → 2</td>
+        <td style="color:var(--gold)">1 → 3 → 2</td>
+        <td style="color:var(--gold)">3 → 1 → 2</td>
+      </tr>
+    </table>
+
+    <div class="warn">
+      <strong>สังเกตจุดสำคัญ:</strong> ที่ <strong>P_max</strong> และ <strong>P_avg</strong> ได้ลำดับเดียวกัน (1→3→2) แต่ที่ <strong>P_min</strong> เปลี่ยนเป็น (3→1→2) เพราะ Unit 3 มี fixed cost (a=78) น้อยมาก เมื่อเดินที่กำลังต่ำมันคุ้มกว่า → <strong>ต้องอ่านโจทย์ให้ชัดว่าให้ใช้จุดไหน</strong>
+    </div>
+  </div>
+
   <div class="example">
     <div class="ex-title">Step 5 — สร้างตาราง Unit Commitment</div>
 
@@ -378,6 +419,10 @@ MathJax = {
   </div>
 
   <h3>Step 6 — Lambda Iteration (Economic Dispatch)</h3>
+
+  <div class="note">
+    <strong>หมายเหตุ:</strong> ตัวอย่าง Lambda Iteration ด้านล่างนี้เป็น <strong>เนื้อหาเพิ่มเติม</strong> ไม่ได้อยู่ในสไลด์อาจารย์โดยตรง (สไลด์ Page 42 มีแค่กราฟเปรียบเทียบ Priority List UC vs Economic Dispatch) — ใส่ไว้เผื่อข้อสอบให้คำนวณตัวเลข Economic Dispatch
+  </div>
 
   <div class="example">
     <div class="ex-title">ตัวอย่าง: Demand = 900 MW → State a (Unit 1+3+2 ทั้งหมด)</div>
