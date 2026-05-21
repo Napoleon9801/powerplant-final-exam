@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerPlant Final Exam — อัตนัย 6 ข้อ | SUT EE</title>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    tags: 'ams'
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root {
+    --gold: #c8972a;
+    --gold-light: #f5e6c0;
+    --dark: #1a1a2e;
+    --text: #2c2c2c;
+    --bg: #f8f7f4;
+    --white: #ffffff;
+    --red: #c0392b;
+    --green: #1e7e34;
+    --blue: #1a5276;
+    --purple: #6c3483;
+    --border: #ddd;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'Noto Sans Thai', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; width: 230px; height: 100vh;
+    background: var(--dark); color: #eee; overflow-y: auto;
+    padding: 20px 0; z-index: 100;
+  }
+  nav .nav-title {
+    font-size: 0.8rem; font-weight: 700; color: var(--gold);
+    padding: 0 16px 12px; border-bottom: 1px solid #333; letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  nav a {
+    display: block; padding: 9px 16px; color: #bbb; text-decoration: none;
+    font-size: 0.82rem; border-left: 3px solid transparent; transition: all 0.2s;
+  }
+  nav a:hover, nav a.active { color: var(--gold); border-left-color: var(--gold); background: rgba(200,151,42,0.08); }
+  nav .nav-sub { padding-left: 28px; font-size: 0.76rem; color: #888; }
+  /* MAIN */
+  main { margin-left: 230px; padding: 0 40px 60px; max-width: 960px; }
+  /* HEADER */
+  .page-header {
+    background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+    color: white; padding: 48px 40px; margin: 0 -40px 40px;
+  }
+  .page-header h1 { font-size: 1.8rem; color: var(--gold); margin-bottom: 6px; }
+  .page-header p { color: #aaa; font-size: 0.9rem; }
+  .badge {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 0.75rem; font-weight: 700; margin-right: 6px; margin-top: 4px;
+  }
+  .badge-gold { background: var(--gold); color: white; }
+  .badge-blue { background: var(--blue); color: white; }
+  /* SECTIONS */
+  section {
+    background: var(--white); border-radius: 12px; padding: 32px 36px;
+    margin-bottom: 36px; box-shadow: var(--shadow);
+    border-top: 4px solid var(--gold);
+  }
+  section h2 {
+    font-size: 1.25rem; color: var(--dark); margin-bottom: 4px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sec-num {
+    background: var(--gold); color: white; border-radius: 50%;
+    width: 32px; height: 32px; display: flex; align-items: center;
+    justify-content: center; font-size: 0.9rem; font-weight: 700; flex-shrink: 0;
+  }
+  .sec-sub { color: #888; font-size: 0.82rem; margin-bottom: 24px; }
+  h3 {
+    font-size: 1rem; color: var(--blue); margin: 24px 0 10px;
+    padding-left: 10px; border-left: 3px solid var(--blue);
+  }
+  h4 { font-size: 0.93rem; color: var(--purple); margin: 18px 0 8px; }
+  p { margin-bottom: 10px; }
+  /* FORMULA BOX */
+  .formula-box {
+    background: #f0f4ff; border: 1px solid #b3c6f7;
+    border-radius: 8px; padding: 18px 22px; margin: 14px 0;
+    overflow-x: auto;
+  }
+  .formula-box .label {
+    font-size: 0.75rem; font-weight: 700; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+  }
+  /* WARNING BOX */
+  .warn {
+    background: #fff8e1; border-left: 4px solid #f39c12;
+    border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0;
+    font-size: 0.88rem;
+  }
+  .warn::before { content: "⚠ "; font-weight: 700; color: #e67e22; }
+  .warn strong { color: #e67e22; }
+  /* NOTE BOX */
+  .note {
+    background: #eafaf1; border-left: 4px solid #27ae60;
+    border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0;
+    font-size: 0.88rem;
+  }
+  .note::before { content: "✓ "; font-weight: 700; color: #27ae60; }
+  /* EXAMPLE BOX */
+  .example {
+    background: #fdfaf0; border: 1px solid #e8d89a;
+    border-radius: 8px; padding: 20px 24px; margin: 16px 0;
+  }
+  .example .ex-title {
+    font-weight: 700; color: var(--gold); font-size: 0.9rem;
+    margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  /* STEP */
+  .step {
+    display: flex; gap: 14px; margin: 12px 0; align-items: flex-start;
+  }
+  .step-num {
+    background: var(--dark); color: var(--gold); border-radius: 50%;
+    width: 26px; height: 26px; display: flex; align-items: center;
+    justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  th { background: var(--dark); color: var(--gold); padding: 9px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: #f9f9f9; }
+  tr:hover td { background: var(--gold-light); }
+  /* CODE */
+  .code-block {
+    background: #1e1e2e; color: #cdd6f4; border-radius: 8px;
+    padding: 16px 20px; font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.83rem; line-height: 1.6; overflow-x: auto; margin: 12px 0;
+  }
+  .code-block .c-green { color: #a6e3a1; }
+  .code-block .c-yellow { color: #f9e2af; }
+  .code-block .c-red { color: #f38ba8; }
+  .code-block .c-blue { color: #89b4fa; }
+  /* BUS DIAGRAM */
+  .bus-diagram {
+    background: #f8f9fa; border: 1px solid #dee2e6;
+    border-radius: 8px; padding: 16px 20px;
+    font-family: monospace; font-size: 0.82rem; line-height: 1.5;
+    overflow-x: auto; margin: 10px 0;
+  }
+  /* GRID */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+  @media(max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  /* RESULT */
+  .result {
+    background: var(--dark); color: var(--gold);
+    border-radius: 6px; padding: 8px 16px; margin: 8px 0;
+    font-family: monospace; font-weight: 700; font-size: 0.92rem;
+    display: inline-block;
+  }
+  /* ACE TABLE */
+  .ace-table td.pos { color: var(--red); font-weight: 700; }
+  .ace-table td.neg { color: var(--green); font-weight: 700; }
+  /* CHECKLIST */
+  .checklist { list-style: none; padding: 0; margin: 10px 0; }
+  .checklist li { padding: 5px 0 5px 22px; position: relative; font-size: 0.88rem; }
+  .checklist li::before { content: "□"; position: absolute; left: 0; color: var(--gold); font-size: 1rem; }
+  /* DIVIDER */
+  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  /* PRINT */
+  @media print {
+    nav { display: none; }
+    main { margin-left: 0; padding: 20px; }
+    section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-title">PowerPlant Final</div>
+  <a href="#q1">① Economic Dispatch</a>
+  <a class="nav-sub" href="#q1-formula">สูตร & วิธี</a>
+  <a class="nav-sub" href="#q1-ex">ตัวอย่าง</a>
+  <a href="#q2">② AGC Multi-Area</a>
+  <a class="nav-sub" href="#q2-2area">2-Area</a>
+  <a class="nav-sub" href="#q2-3area">3-Area</a>
+  <a href="#q3">③ Bus Arrangement</a>
+  <a class="nav-sub" href="#q3-types">7 ประเภท</a>
+  <a href="#q4">④ Touch &amp; Step Voltage</a>
+  <a class="nav-sub" href="#q4-cs">หา Cs</a>
+  <a class="nav-sub" href="#q4-ex">ตัวอย่าง 3 กรณี</a>
+  <a href="#q5">⑤ Ground Grid R_G</a>
+  <a class="nav-sub" href="#q5-sverak">Sverak Formula</a>
+  <a class="nav-sub" href="#q5-ex">ตัวอย่าง</a>
+  <a href="#q6">⑥ Relay Setting</a>
+  <a class="nav-sub" href="#q6-steps">5 Steps</a>
+  <a class="nav-sub" href="#q6-ex1">ตัวอย่าง SI</a>
+  <a class="nav-sub" href="#q6-ex2">ตัวอย่าง VI</a>
+  <a class="nav-sub" href="#q6-coord">Coordination</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+<div class="page-header">
+  <h1>PowerPlant Final Exam — อัตนัย 6 ข้อ</h1>
+  <p>วิธีทำอย่างละเอียด · สมการ · ตัวอย่างจาก Lecture · ข้อควรระวัง</p>
+  <div style="margin-top:12px">
+    <span class="badge badge-gold">50 คะแนน</span>
+    <span class="badge badge-blue">6 ข้อ × 5 คะแนน</span>
+    <span class="badge badge-blue">SUT EE · 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ Q1 ═══ -->
+<section id="q1">
+  <h2><span class="sec-num">1</span> Economic Load Dispatch — Priority List</h2>
+  <div class="sec-sub">Ch6 · 5 คะแนน · เน้นคำนวณ + ตาราง Commitment</div>
+
+  <h3 id="q1-formula">สูตรหลัก</h3>
+
+  <div class="formula-box">
+    <div class="label">Cost Function &amp; Incremental Cost</div>
+    $$F_i(P_i) = \alpha_i + \beta_i P_i + \gamma_i P_i^2 \quad [\text{฿/h}]$$
+    $$\text{IC}_i = \frac{dF_i}{dP_i} = \beta_i + 2\gamma_i P_i \quad [\text{฿/MWh}]$$
+  </div>
+
+  <div class="formula-box">
+    <div class="label">Priority Index (Fuel Cost-Based List)</div>
+    $$\sigma_i = \frac{F_i(P_{\text{test}})}{P_{\text{test}}} \quad [\text{฿/MWh}]$$
+    <p style="margin-top:8px;font-size:0.85rem">โดย $P_{\text{test}}$ อาจเป็น $P_{\max}$, $P_{\text{avg}} = \frac{P_{\min}+P_{\max}}{2}$, หรือ $P_{\min}$ — อ่านโจทย์ให้ดี</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="label">Lambda Iteration (Economic Dispatch)</div>
+    $$\text{เงื่อนไข: } \lambda^* = \text{IC}_1 = \text{IC}_2 = \cdots = \text{IC}_n$$
+    $$P_i^* = \frac{\lambda^* - \beta_i}{2\gamma_i}, \quad P_{i,\min} \le P_i^* \le P_{i,\max}$$
+    $$\sum_{i=1}^{n} P_i^* = P_D \quad \text{(Power Balance)}$$
+  </div>
+
+  <h3>วิธีทำ Priority List (Step-by-Step)</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>อ่านโจทย์:</strong> โจทย์บอกให้ใช้ $P_{\text{test}}$ แบบไหน? (Max / Average / Min) ใช้ค่านั้นตลอด</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body"><strong>คำนวณ $F_i(P_{\text{test}})$</strong> สำหรับทุก unit แทนค่า $P_{\text{test}}$ ลงใน Cost Function</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>คำนวณ $\sigma_i = F_i(P_{\text{test}}) / P_{\text{test}}$</strong> (Average Cost) สำหรับทุก unit</div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body"><strong>เรียง Priority:</strong> $\sigma_i$ ต่ำสุด = Priority 1 (เปิดก่อน)</div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body"><strong>สร้างตาราง Unit Commitment:</strong> เพิ่ม Unit ทีละตัว บวก $P_{\min}$ และ $P_{\max}$ สะสม</div>
+  </div>
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-body">(ถ้าโจทย์ต้องการ) <strong>Lambda Iteration:</strong> ใช้ Units ที่ ON → แก้ระบบสมการ IC = $\lambda$ → หา $P_i^*$ → ตรวจ limit</div>
+  </div>
+
+  <h3 id="q1-ex">ตัวอย่างจาก Lecture (3 Units)</h3>
+
+  <div class="example">
+    <div class="ex-title">โจทย์ — สถานีมีหน่วยผลิต 3 หน่วย</div>
+    <table>
+      <tr><th>Unit</th><th>$P_{\min}$ (MW)</th><th>$P_{\max}$ (MW)</th><th>Cost Function (฿/h)</th></tr>
+      <tr><td>1</td><td>150</td><td>600</td><td>$F_1 = 510 + 7.2P_1 + 0.00142P_1^2$</td></tr>
+      <tr><td>2</td><td>100</td><td>400</td><td>$F_2 = 310 + 7.85P_2 + 0.00194P_2^2$</td></tr>
+      <tr><td>3</td><td>50</td><td>200</td><td>$F_3 = 78 + 7.97P_3 + 0.00482P_3^2$</td></tr>
+    </table>
+
+    <h4>Step 1–3: คำนวณ $\sigma_i$ ที่ 3 จุด</h4>
+    <p>$P_{\text{avg},1} = (150+600)/2 = 375\text{ MW}$, $\quad P_{\text{avg},2} = 250\text{ MW}$, $\quad P_{\text{avg},3} = 125\text{ MW}$</p>
+
+    <div class="formula-box">
+      $$\sigma_i^{\text{max}} = \frac{F_i(P_{i,\max})}{P_{i,\max}}, \quad \sigma_i^{\text{avg}} = \frac{F_i(P_{i,\text{avg}})}{P_{i,\text{avg}}}, \quad \sigma_i^{\text{min}} = \frac{F_i(P_{i,\min})}{P_{i,\min}}$$
+    </div>
+
+    <table>
+      <tr><th>Unit</th><th>$\sigma$ @ $P_{\max}$ (฿/MWh)</th><th>$\sigma$ @ $P_{\text{avg}}$ (฿/MWh)</th><th>$\sigma$ @ $P_{\min}$ (฿/MWh)</th></tr>
+      <tr><td>1</td><td><strong>8.90</strong> ← ต่ำสุด</td><td><strong>9.09</strong> ← ต่ำสุด</td><td>10.81</td></tr>
+      <tr><td>2</td><td>9.40</td><td>9.58</td><td>11.14</td></tr>
+      <tr><td>3</td><td>9.32</td><td>9.20</td><td><strong>9.77</strong> ← ต่ำสุด</td></tr>
+      <tr><td><strong>Priority</strong></td><td><strong>1 → 3 → 2</strong></td><td><strong>1 → 3 → 2</strong></td><td><strong>3 → 1 → 2</strong></td></tr>
+    </table>
+
+    <h4>Step 5: ตาราง Unit Commitment (Priority: U1 → U3 → U2)</h4>
+    <table>
+      <tr><th>State</th><th>Units ON</th><th>$\Sigma P_{\min}$ (MW)</th><th>$\Sigma P_{\max}$ (MW)</th></tr>
+      <tr><td>a</td><td>U1 + U3 + U2</td><td>150+50+100 = 300</td><td>600+200+400 = 1200</td></tr>
+      <tr><td>b</td><td>U1 + U3</td><td>150+50 = 200</td><td>600+200 = 800</td></tr>
+      <tr><td>c</td><td>U1</td><td>150</td><td>600</td></tr>
+    </table>
+
+    <h4>Step 6: Lambda Iteration (Demand = 1000 MW, ไม่มี limit เกิน)</h4>
+    <p>จาก $\text{IC}_1 = \text{IC}_2$: $\quad 5.3 + 0.008P_1 = 5.5 + 0.012P_2 \;\Rightarrow\; 0.008P_1 - 0.012P_2 = 0.2 \quad\cdots(2)$</p>
+    <p>จาก $\text{IC}_2 = \text{IC}_3$: $\quad 5.5 + 0.012P_2 = 5.8 + 0.018P_3 \;\Rightarrow\; 0.012P_2 - 0.018P_3 = 0.3 \quad\cdots(3)$</p>
+    <p>แก้ (1)+(2)+(3): $\quad P_1 + P_2 + P_3 = 1000 \quad\cdots(1)$</p>
+    <div style="text-align:center;margin:10px 0">
+      <span class="result">$P_1 = 494.74\text{ MW},\quad P_2 = 313.16\text{ MW},\quad P_3 = 192.11\text{ MW}$</span>
+    </div>
+    <div style="text-align:center">
+      <span class="result">$\lambda^* = 9.258\text{ ฿/MWh}$</span>
+    </div>
+  </div>
+
+  <h3>Lambda Iteration เมื่อมี Limit เกิน (1600 MW)</h3>
+  <div class="example">
+    <div class="ex-title">กรณี $P_1^* = 778.9 > 750 = P_{1,\max}$ → Fix ที่ $P_{1,\max}$</div>
+    <p>Fix $P_1 = 750$ MW → เหลือ Demand = $1600 - 750 = 850$ MW → แจกให้ U2, U3 ใหม่</p>
+    <p>แก้ $P_2 + P_3 = 850$ และ $\text{IC}_2 = \text{IC}_3$ ใหม่อีกครั้ง:</p>
+    <div style="text-align:center;margin:10px 0">
+      <span class="result">$P_1 = 750\text{ MW (fixed)},\quad P_2 = 520\text{ MW},\quad P_3 = 330\text{ MW}$</span>
+    </div>
+  </div>
+
+  <div class="warn">
+    <strong>จุดระวัง:</strong> หน่วยใดถูก fix → ต้องแก้สมการ balance และ IC = $\lambda$ ใหม่สำหรับ units ที่เหลือ ห้าม reuse ค่า $\lambda$ เดิม
+  </div>
+  <div class="warn">
+    <strong>ผลลัพธ์ Priority อาจต่างกัน</strong> ขึ้นกับว่าใช้ $P_{\max}$, $P_{\text{avg}}$, หรือ $P_{\min}$ เป็น test point — อ่านโจทย์ให้ชัดเจน
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ Q2 ═══ -->
+<section id="q2">
+  <h2><span class="sec-num">2</span> AGC Multi-Area — ACE Calculation</h2>
+  <div class="sec-sub">Ch7 · 5 คะแนน · คำนวณ $\Delta P_{\text{tie}}$, ACE, บอกทิศทาง Gen</div>
+
+  <h3>สูตรหลัก</h3>
+
+  <div class="formula-box">
+    <div class="label">Area Control Error (ACE)</div>
+    $$\boxed{ACE_i = \Delta P_{\text{tie},i} + B_i \cdot \Delta f}$$
+    <p style="margin-top:10px;font-size:0.85rem">
+      $\Delta P_{\text{tie},i} = P_{\text{tie,actual}} - P_{\text{tie,scheduled}}$ (Actual $-$ Schedule, มีเครื่องหมาย)<br>
+      $B_i$ = Frequency Bias [MW/Hz] (กำหนดมาให้)<br>
+      $\Delta f = f_{\text{actual}} - f_{\text{nominal}}$ [Hz]
+    </p>
+  </div>
+
+  <div class="formula-box">
+    <div class="label">ระบบ 2 Area — Tie-line Balance</div>
+    $$\Delta P_{\text{tie},2} = -\Delta P_{\text{tie},1}$$
+    <p style="font-size:0.85rem;margin-top:6px">กำลังที่ส่งออกจาก Area 1 = กำลังที่รับเข้า Area 2 (เครื่องหมายตรงข้าม)</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="label">ระบบ 3 Area — Tie-line Balance Check</div>
+    $$\sum_{i=A,B,C} \Delta P_{\text{tie},i} = 0 \quad \text{(ต้องเป็น 0 เสมอ)}$$
+  </div>
+
+  <h3>การแปลผล ACE</h3>
+  <table class="ace-table">
+    <tr><th>ค่า ACE</th><th>ความหมาย</th><th>AGC สั่ง</th></tr>
+    <tr><td class="neg">$ACE < 0$</td><td>Area ผลิตน้อยไป / ส่งออกน้อยกว่า Schedule</td><td class="neg">เพิ่ม Generation ↑</td></tr>
+    <tr><td class="pos">$ACE > 0$</td><td>Area ผลิตมากไป / ส่งออกมากกว่า Schedule</td><td class="pos">ลด Generation ↓</td></tr>
+    <tr><td>$ACE = 0$</td><td>สมดุล</td><td>คงเดิม</td></tr>
+  </table>
+
+  <h3 id="q2-2area">ตัวอย่าง — ระบบ 2 Area (จาก Lecture)</h3>
+  <div class="example">
+    <div class="ex-title">โจทย์</div>
+    <ul style="margin:8px 0 12px 18px;font-size:0.9rem">
+      <li>$f = 49.95$ Hz, $f_{\text{nom}} = 50$ Hz $\;\Rightarrow\; \Delta f = 49.95 - 50 = -0.05$ Hz</li>
+      <li>Tie-line <strong>Schedule</strong>: Area 1 $\to$ Area 2 = $+300$ MW</li>
+      <li>Tie-line <strong>Actual</strong>: Area 1 $\to$ Area 2 = $+260$ MW</li>
+      <li>$B_1 = 400$ MW/Hz, $\;B_2 = 350$ MW/Hz</li>
+    </ul>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>$\Delta P_{\text{tie}}$:</strong>
+        $$\Delta P_{\text{tie},1} = 260 - 300 = -40\text{ MW}$$
+        $$\Delta P_{\text{tie},2} = -\Delta P_{\text{tie},1} = +40\text{ MW}$$
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>ACE:</strong>
+        $$ACE_1 = (-40) + 400 \times (-0.05) = -40 - 20 = \mathbf{-60\text{ MW}} \quad\to\text{ เพิ่ม Gen ↑}$$
+        $$ACE_2 = (+40) + 350 \times (-0.05) = 40 - 17.5 = \mathbf{+22.5\text{ MW}} \quad\to\text{ ลด Gen ↓}$$
+      </div>
+    </div>
+  </div>
+
+  <h3 id="q2-3area">ตัวอย่าง — ระบบ 3 Area (จาก Lecture)</h3>
+  <div class="example">
+    <div class="ex-title">โจทย์</div>
+    <ul style="margin:8px 0 12px 18px;font-size:0.9rem">
+      <li>$f = 49.94$ Hz $\;\Rightarrow\; \Delta f = -0.06$ Hz</li>
+      <li>$B_A = 300$, $B_B = 250$, $B_C = 200$ MW/Hz</li>
+      <li>$\Delta P_{\text{tie},A} = -40$ MW, $\;\Delta P_{\text{tie},B} = +10$ MW, $\;\Delta P_{\text{tie},C} = +30$ MW</li>
+    </ul>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Check Balance:</strong>
+        $$\sum \Delta P_{\text{tie}} = -40 + 10 + 30 = 0 \quad \checkmark$$
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>ACE แต่ละ Area:</strong>
+        $$ACE_A = -40 + 300 \times (-0.06) = -40 - 18 = \mathbf{-58\text{ MW}} \quad\to\text{ เพิ่ม Gen ↑}$$
+        $$ACE_B = +10 + 250 \times (-0.06) = 10 - 15 = \mathbf{-5\text{ MW}} \quad\to\text{ เพิ่ม Gen ↑ (เล็กน้อย)}$$
+        $$ACE_C = +30 + 200 \times (-0.06) = 30 - 12 = \mathbf{+18\text{ MW}} \quad\to\text{ ลด Gen ↓}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="warn">
+    <strong>สำคัญมาก:</strong> $\Delta P_{\text{tie},i}$ ต้องนิยามให้ถูก — เป็น Actual $-$ Schedule เสมอ และต้องมีเครื่องหมายแสดงทิศทาง
+  </div>
+  <div class="warn">
+    ในระบบ 3 Area ถ้า $\sum \Delta P_{\text{tie}} \ne 0$ แสดงว่าโจทย์กำหนด Scheduled หรือ Actual ผิดพลาด ต้องตรวจสอบก่อนคำนวณ ACE
+  </div>
+  <div class="note">$\Delta f < 0$ (ความถี่ต่ำกว่า nominal) มักทำให้ $B_i \cdot \Delta f < 0$ → ลด ACE → ดัน ACE เป็นลบ → เพิ่ม Gen</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ Q3 ═══ -->
+<section id="q3">
+  <h2><span class="sec-num">3</span> Bus Arrangement — วาดรูปและ Identify</h2>
+  <div class="sec-sub">Ch8 · 5 คะแนน · วาด Topology หรืออ่าน SLD แล้วบอกประเภท</div>
+
+  <h3>ตาราง 7 ประเภท</h3>
+  <table>
+    <tr><th>#</th><th>ย่อ</th><th>ชื่อเต็ม</th><th>CB/Feeder</th><th>จำนวน Bus</th><th>Reliability</th><th>ใช้ที่</th></tr>
+    <tr><td>①</td><td><strong>SBSB</strong></td><td>Single-Bus, Single-Breaker</td><td>1</td><td>1</td><td>ต่ำสุด</td><td>สถานีเล็ก</td></tr>
+    <tr><td>②</td><td><strong>DBDB</strong></td><td>Double-Bus, Double-Breaker</td><td>2</td><td>2</td><td>สูงสุด</td><td>500 kV</td></tr>
+    <tr><td>③</td><td><strong>MATB</strong></td><td>Main &amp; Transfer Bus</td><td>~1</td><td>2 (Main+Xfer)</td><td>ปานกลาง</td><td>ทั่วไป</td></tr>
+    <tr><td>④</td><td><strong>DMAST</strong></td><td>Double-Main &amp; Single-Transfer</td><td>~1</td><td>3 (A+B+Xfer)</td><td>สูง</td><td>115 kV สำคัญ</td></tr>
+    <tr><td>⑤</td><td><strong>DBSB</strong></td><td>Double-Bus, Single-Breaker</td><td>1+Tie CB</td><td>2</td><td>ปานกลาง-สูง</td><td>33–115 kV</td></tr>
+    <tr><td>⑥</td><td><strong>Ring</strong></td><td>Ring Bus</td><td>1 (=n Feeder)</td><td>0 (loop)</td><td>สูง</td><td>4–6 Feeders</td></tr>
+    <tr><td>⑦</td><td><strong>BAAH</strong></td><td>Breaker-and-a-Half</td><td><strong>1.5</strong></td><td>2</td><td>สูงมาก</td><td>230–500 kV</td></tr>
+  </table>
+
+  <h3 id="q3-types">Topology ของแต่ละแบบ</h3>
+
+  <div class="two-col">
+    <div>
+      <h4>① SBSB — Single-Bus Single-Breaker</h4>
+      <div class="bus-diagram">
+══════════════ BUS ══════════════
+  │           │           │
+[DS]        [DS]        [DS]
+[CB]        [CB]        [CB]
+[DS]        [DS]        [DS]
+  │           │           │
+ F1          F2          F3
+      </div>
+      <p style="font-size:0.82rem">✔ ถูก ง่าย &nbsp;✘ Bus เสีย → ดับทั้งหมด</p>
+    </div>
+    <div>
+      <h4>② DBDB — Double-Bus Double-Breaker</h4>
+      <div class="bus-diagram">
+═══════════ BUS 1 ════════════
+[DS][CB][DS]    [DS][CB][DS]
+      │                │
+     F1               F2
+      │                │
+[DS][CB][DS]    [DS][CB][DS]
+═══════════ BUS 2 ════════════
+      </div>
+      <p style="font-size:0.82rem">✔ CB เสียไม่ส่งผล &nbsp;✘ แพงที่สุด, ใช้พื้นที่มาก</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h4>③ MATB — Main &amp; Transfer Bus</h4>
+      <div class="bus-diagram">
+═══════════ MAIN BUS ═══════════
+[DS][CB][DS]      [DS][CB][DS]
+  F1                  F2
+═══════════ TRANSFER BUS ═══════
+              [Tie CB]
+      </div>
+      <p style="font-size:0.82rem">✔ ซ่อม CB ไม่ดับ &nbsp;✘ Transfer ใช้ได้ทีละ 1</p>
+    </div>
+    <div>
+      <h4>④ DMAST — Double-Main + Single-Transfer</h4>
+      <div class="bus-diagram">
+═══════════ BUS-A ══════════
+[DS][CB][DS]  [DS][CB][DS]
+  F1              F2
+[DS][CB][DS]  [DS][CB][DS]
+═══════════ BUS-B ══════════
+        [Tie CB]
+═══ TRANSFER BUS ═══════════
+      </div>
+      <p style="font-size:0.82rem">✔ BusA เสีย → ย้าย BusB ได้ทันที &nbsp;(นครราชสีมา 2)</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h4>⑤ DBSB — Double-Bus Single-Breaker</h4>
+      <div class="bus-diagram">
+═══════════ BUS 1 ════════════
+[DS]       [DS]       [DS]
+[CB]       [CB]       [CB]
+[DS]       [DS]       [DS]
+═══════════ BUS 2 ════════════
+          [Tie CB]
+  F1         F2         F3
+      </div>
+      <p style="font-size:0.82rem">✔ เลือกบัสได้ &nbsp;✘ DS มาก → ซับซ้อน</p>
+    </div>
+    <div>
+      <h4>⑥ Ring Bus</h4>
+      <div class="bus-diagram">
+  [CB]──────────[CB]
+   │                │
+F1─●            ●─F2
+   │                │
+  [CB]──────────[CB]
+            │
+           ●─F3 (ระหว่าง CB)
+      </div>
+      <p style="font-size:0.82rem">✔ n feeder = n CB &nbsp;✘ CB 2 ตัวติดกัน fault → 2 วงจรดับ</p>
+    </div>
+  </div>
+
+  <div>
+    <h4>⑦ BAAH — Breaker-and-a-Half &nbsp;<span style="color:var(--gold);font-size:0.8rem">($\frac{3}{2} = 1.5$ CB/feeder)</span></h4>
+    <div class="bus-diagram" style="max-width:420px">
+══════════════════ BUS 1 ══════════════════
+[CB-1A]                        [CB-1B]
+  F1──●──[CB-TIE-1]──●──[CB-TIE-2]──●──F2
+[CB-2A]                        [CB-2B]
+══════════════════ BUS 2 ══════════════════
+(3 CB ต่อ 2 Feeder → CB-TIE ใช้ร่วมกัน)
+    </div>
+    <p style="font-size:0.82rem">✔ Reliability เทียบ DBDB แต่ประหยัดกว่า &nbsp;✔ ใช้ที่ 230–500 kV &nbsp;✘ ซับซ้อน ต้องออกแบบ protection ดี</p>
+  </div>
+
+  <div class="warn">
+    <strong>Key Identifier:</strong> นับ CB ต่อ feeder → 1=SBSB/MATB/DBSB/Ring, 1.5=BAAH, 2=DBDB &nbsp;|&nbsp; นับ Bus → 1=SBSB, 2=DBDB/DBSB/BAAH, 3=DMAST
+  </div>
+  <div class="note">ตัวอย่างข้อสอบ: สถานีนครราชสีมา 2 (115 kV) ใช้แบบ DMAST — มี Main Bus 2 ชุด + Transfer Bus</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ Q4 ═══ -->
+<section id="q4">
+  <h2><span class="sec-num">4</span> Touch &amp; Step Voltage (IEEE 80)</h2>
+  <div class="sec-sub">Ch8 · 5 คะแนน · คำนวณ Allowable Voltage → เปรียบ Measured</div>
+
+  <h3>สูตรหลัก</h3>
+
+  <div class="formula-box">
+    <div class="label">Allowable Touch &amp; Step Voltage (IEEE 80)</div>
+    $$E_{\text{touch}} = \left(1000 + 1.5\, C_s\, \rho_s\right) \frac{K}{\sqrt{t_s}} \quad [\text{V}]$$
+    $$E_{\text{step}} = \left(1000 + 6\, C_s\, \rho_s\right) \frac{K}{\sqrt{t_s}} \quad [\text{V}]$$
+    <table style="margin-top:12px">
+      <tr><th>Body Weight</th><th>$K$</th></tr>
+      <tr><td>50 kg</td><td><strong>0.116</strong></td></tr>
+      <tr><td>70 kg</td><td><strong>0.157</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="formula-box" id="q4-cs">
+    <div class="label">Derating Factor $C_s$ (IEEE 80)</div>
+    $$C_s = 1 - \frac{1 - \dfrac{\rho_E}{\rho_s}}{1 + 22.22\, h_s}$$
+    <p style="font-size:0.85rem;margin-top:10px">
+      $\rho_E$ = soil resistivity ($\approx 547 f^{-0.434} \approx 100$ Ω·m ที่ 50 Hz)<br>
+      $\rho_s$ = surface material resistivity (Ω·m)<br>
+      $h_s$ = ความหนาของวัสดุปูพื้น <strong>(หน่วยเมตร!)</strong>
+    </p>
+    <div class="warn" style="margin-top:10px">ถ้า<strong>ไม่มีวัสดุปูพื้น</strong>: $C_s = 1.0$ และ $\rho_s = \rho_E$ → ไม่ต้องคำนวณ $C_s$</div>
+  </div>
+
+  <h3 id="q4-ex">ตัวอย่าง 3 กรณี (จาก Lecture — 70 kg, $\rho_E = 100$ Ω·m, $t_s = 1.0$ s)</h3>
+
+  <div class="example">
+    <div class="ex-title">กรณี ก — ไม่มีวัสดุปูพื้น</div>
+    $$C_s = 1.0, \quad \rho_s = \rho_E = 100 \text{ Ω·m}$$
+    $$E_{\text{touch}} = (1000 + 1.5 \times 1.0 \times 100)\frac{0.157}{\sqrt{1.0}} = 1150 \times 0.157 = \mathbf{180.6\text{ V}}$$
+    $$E_{\text{step}} = (1000 + 6 \times 1.0 \times 100)\frac{0.157}{\sqrt{1.0}} = 1600 \times 0.157 = \mathbf{251.2\text{ V}}$$
+  </div>
+
+  <div class="example">
+    <div class="ex-title">กรณี ข — หินบดปูพื้น $h_s = 10\text{ cm} = 0.1\text{ m}$, $\rho_s = 3000$ Ω·m</div>
+    $$C_s = 1 - \frac{1 - 100/3000}{1 + 22.22 \times 0.1} = 1 - \frac{0.9667}{3.222} = 1 - 0.300 = 0.700$$
+    $$E_{\text{touch}} = (1000 + 1.5 \times 0.700 \times 3000)\frac{0.157}{\sqrt{1.0}} = 4150 \times 0.157 = \mathbf{651.6\text{ V}}$$
+    $$E_{\text{step}} = (1000 + 6 \times 0.700 \times 3000)\frac{0.157}{\sqrt{1.0}} = 13600 \times 0.157 = \mathbf{2135.2\text{ V}}$$
+  </div>
+
+  <div class="example">
+    <div class="ex-title">กรณี ค — ยางมะตอยปูพื้น $h_s = 5\text{ cm} = 0.05\text{ m}$, $\rho_s = 10000$ Ω·m</div>
+    $$C_s = 1 - \frac{1 - 100/10000}{1 + 22.22 \times 0.05} = 1 - \frac{0.990}{2.111} = 1 - 0.469 = 0.531$$
+    $$E_{\text{touch}} = (1000 + 1.5 \times 0.531 \times 10000)\frac{0.157}{\sqrt{1.0}} = 8965 \times 0.157 = \mathbf{1407.5\text{ V}}$$
+    $$E_{\text{step}} = (1000 + 6 \times 0.531 \times 10000)\frac{0.157}{\sqrt{1.0}} = 32860 \times 0.157 = \mathbf{5159.0\text{ V}}$$
+  </div>
+
+  <h3>ผลสรุปและการตัดสิน Safety</h3>
+  <table>
+    <tr><th>กรณี</th><th>วัสดุ</th><th>$C_s$</th><th>$E_{\text{touch}}$ (V)</th><th>$E_{\text{step}}$ (V)</th></tr>
+    <tr><td>ก</td><td>ไม่มี</td><td>1.000</td><td>180.6</td><td>251.2</td></tr>
+    <tr><td>ข</td><td>หินบด 10 cm</td><td>0.700</td><td>651.6</td><td>2135.2</td></tr>
+    <tr><td>ค</td><td>ยางมะตอย 5 cm</td><td>0.531</td><td>1407.5</td><td>5159.0</td></tr>
+  </table>
+
+  <div class="formula-box">
+    <div class="label">การตัดสิน Safety</div>
+    $$E_{\text{measured}} \le E_{\text{allowable}} \;\Rightarrow\; \checkmark\text{ SAFE}$$
+    $$E_{\text{measured}} > E_{\text{allowable}} \;\Rightarrow\; \times\text{ UNSAFE (ต้องปรับปรุง Ground Grid)}$$
+  </div>
+
+  <div class="warn"><strong>$h_s$ ต้องเป็นหน่วยเมตรเสมอ</strong> — โจทย์มักให้เป็น cm → ต้องหาร 100 ก่อนแทนสูตร</div>
+  <div class="note">$\rho_s$ สูงขึ้น (วัสดุเป็นฉนวนดีขึ้น) → $E_{\text{allowable}}$ สูงขึ้น → ปลอดภัยมากขึ้น</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ Q5 ═══ -->
+<section id="q5">
+  <h2><span class="sec-num">5</span> Ground Grid Resistance — Sverak Formula</h2>
+  <div class="sec-sub">Ch8 · 5 คะแนน · อ่านรูปกริด + คำนวณ $R_G$</div>
+
+  <h3 id="q5-sverak">Sverak Formula (IEEE 80)</h3>
+
+  <div class="formula-box">
+    <div class="label">Sverak — Ground Grid Resistance</div>
+    $$\boxed{R_G = \rho_E \left[\frac{1}{L_T} + \frac{1}{\sqrt{20A}}\left(1 + \frac{1}{1 + h\sqrt{20/A}}\right)\right] \quad [\Omega]}$$
+  </div>
+
+  <table>
+    <tr><th>Symbol</th><th>ความหมาย</th><th>หน่วย</th><th>หมายเหตุ</th></tr>
+    <tr><td>$\rho_E$</td><td>Soil Resistivity</td><td>Ω·m</td><td>กำหนดมาให้</td></tr>
+    <tr><td>$L_T$</td><td>ความยาวรวมสายดินทั้งหมด</td><td>m</td><td>Grid + Ground Rods</td></tr>
+    <tr><td>$A$</td><td>พื้นที่กริด = กว้าง × ยาว</td><td>m²</td><td></td></tr>
+    <tr><td>$h$</td><td>ความลึกฝัง (burial depth)</td><td><strong>m</strong></td><td>⚠ แปลง cm→m</td></tr>
+  </table>
+
+  <h3>วิธีอ่านรูปกริดเพื่อหา $L_T$</h3>
+
+  <div class="formula-box">
+    <div class="label">การนับเส้นจากรูป</div>
+    $$L_T^{\text{grid}} = n_h \times W + n_v \times L$$
+    $$L_T^{\text{total}} = L_T^{\text{grid}} + N_{\text{rod}} \times L_{\text{rod}}$$
+    <p style="font-size:0.85rem;margin-top:8px">
+      $n_h$ = จำนวนเส้นแนวนอน, $W$ = ความกว้างกริด (m)<br>
+      $n_v$ = จำนวนเส้นแนวตั้ง, $L$ = ความยาวกริด (m)<br>
+      ถ้า spacing เท่ากัน: $n = \text{จำนวนช่อง}+1$ (เช่น 10 ช่อง = 11 เส้น)
+    </p>
+  </div>
+
+  <h3 id="q5-ex">ตัวอย่างจาก Lecture (Slide 61–63)</h3>
+
+  <div class="example">
+    <div class="ex-title">โจทย์ — สถานีไฟฟ้า 22/115 kV</div>
+    <ul style="margin:8px 0 12px 18px;font-size:0.9rem">
+      <li>$\rho_E = 400$ Ω·m</li>
+      <li>กริด $70\text{ m} \times 70\text{ m}$ — 11 เส้นแนวนอน, 11 เส้นแนวตั้ง</li>
+      <li>Ground Rod 20 แท่ง × ยาว 7.5 m แต่ละแท่ง</li>
+      <li>$h = 0.5$ m (ความลึกฝัง)</li>
+    </ul>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>คำนวณ $L_T$:</strong>
+        $$L_T^{\text{grid}} = 11 \times 70 + 11 \times 70 = 770 + 770 = 1540\text{ m}$$
+        $$L_T^{\text{rods}} = 20 \times 7.5 = 150\text{ m}$$
+        $$L_T = 1540 + 150 = \mathbf{1690\text{ m}}$$
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>คำนวณ $A$:</strong>
+        $$A = 70 \times 70 = 4900\text{ m}^2$$
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>คำนวณแต่ละ Term ในสูตร Sverak:</strong>
+        $$\sqrt{20A} = \sqrt{20 \times 4900} = \sqrt{98000} = 313.05$$
+        $$\sqrt{\frac{20}{A}} = \sqrt{\frac{20}{4900}} = 0.06389$$
+        $$h\sqrt{\frac{20}{A}} = 0.5 \times 0.06389 = 0.03195$$
+        $$1 + h\sqrt{\frac{20}{A}} = 1.03195 \;\Rightarrow\; \frac{1}{1.03195} = 0.9691$$
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>แทนสูตร Sverak:</strong>
+        $$R_G = 400\left[\frac{1}{1690} + \frac{1}{313.05}\left(1 + 0.9691\right)\right]$$
+        $$= 400\left[5.917 \times 10^{-4} + 3.194 \times 10^{-3} \times 1.969\right]$$
+        $$= 400 \times \left[5.917 \times 10^{-4} + 6.292 \times 10^{-3}\right]$$
+        $$= 400 \times 6.884 \times 10^{-3}$$
+        <div style="text-align:center;margin-top:10px">
+          <span class="result">$R_G \approx 2.75\text{ Ω}$</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="label">เกณฑ์ IEEE — ค่า $R_G$ ที่ยอมรับได้</div>
+    <p>สถานีขนาดใหญ่ (transmission): $R_G \le 1\text{ Ω}$</p>
+    <p>สถานีขนาดเล็ก: $R_G$ อาจอยู่ที่ $1-5\text{ Ω}$</p>
+  </div>
+
+  <div class="warn"><strong>$h$ ต้องเป็นเมตร</strong> — ถ้าโจทย์ให้เป็น cm (เช่น 50 cm) ต้องเปลี่ยนเป็น 0.5 m ก่อน</div>
+  <div class="warn">นับ Ground Rod รวมใน $L_T$ ด้วย — อย่าลืม</div>
+  <div class="note">นับเส้น = นับ conductor ไม่ใช่ช่อง: กริด 10 ช่อง → 11 เส้น</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ Q6 ═══ -->
+<section id="q6">
+  <h2><span class="sec-num">6</span> Relay Setting — IDMT Overcurrent</h2>
+  <div class="sec-sub">Ch10 · 5 คะแนน · เลือก CTR, Pickup, PSM, TMS, คำนวณ Trip Time</div>
+
+  <h3>สูตร IDMT (IEC 60255)</h3>
+
+  <div class="formula-box">
+    <div class="label">4 IDMT Curves</div>
+    <table>
+      <tr><th>Curve</th><th>ย่อ</th><th>สูตร</th></tr>
+      <tr><td>Standard Inverse</td><td><strong>SI</strong></td><td>$T = \text{TMS} \times \dfrac{0.14}{PSM^{0.02}-1}$</td></tr>
+      <tr><td>Very Inverse</td><td><strong>VI</strong></td><td>$T = \text{TMS} \times \dfrac{13.5}{PSM-1}$</td></tr>
+      <tr><td>Extremely Inverse</td><td><strong>EI</strong></td><td>$T = \text{TMS} \times \dfrac{80}{PSM^2-1}$</td></tr>
+      <tr><td>Long-Time Inverse</td><td><strong>LTI</strong></td><td>$T = \text{TMS} \times \dfrac{120}{PSM-1}$</td></tr>
+    </table>
+    <p style="font-size:0.83rem;margin-top:10px">$PSM = \dfrac{I_{\text{fault, sec}}}{I_p} = \dfrac{I_{\text{fault, primary}} / \text{CTR}}{I_p}$ &nbsp;&nbsp;|&nbsp;&nbsp; TMS ช่วง 0.025 – 1.0</p>
+  </div>
+
+  <h3>Standard Values ที่ต้องจำ</h3>
+
+  <div class="two-col">
+    <div class="formula-box">
+      <div class="label">CTR Standard (A/5A)</div>
+      <p style="font-family:monospace;font-size:0.85rem">50, 75, 100, 150, 200, 300, 400, 500, 600, 800</p>
+      <p style="font-size:0.82rem;margin-top:6px">เลือกให้ $I_{\text{load,sec}} \le 5$ A → ปัดขึ้น</p>
+    </div>
+    <div class="formula-box">
+      <div class="label">Pickup Tap (% ของ 5A)</div>
+      <p style="font-family:monospace;font-size:0.85rem">
+        50%  = 2.50 A<br>
+        75%  = 3.75 A<br>
+        100% = 5.00 A<br>
+        125% = 6.25 A<br>
+        150% = 7.50 A<br>
+        175% = 8.75 A<br>
+        200% = 10.0 A
+      </p>
+    </div>
+  </div>
+
+  <h3 id="q6-steps">5 Steps — วิธีทำ</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <strong>คำนวณ $I_{\text{load}}$ (primary)</strong> จาก MVA rating
+      $$I_{\text{load}} = \frac{S_{\text{MVA}} \times 10^6}{\sqrt{3} \times V_{\text{kV}} \times 10^3} \quad [\text{A}]$$
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <strong>เลือก CTR</strong>
+      $$\text{CTR} = \frac{I_{\text{load}}}{5} \to \text{ปัดขึ้นเป็น Standard Ratio}$$
+      $$I_{\text{load,sec}} = \frac{I_{\text{load}}}{\text{CTR}}$$
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <strong>เลือก Pickup $I_p$ (secondary)</strong>
+      $$I_p = K \times I_{\text{load,sec}}, \quad K = 1.25 \sim 1.5$$
+      เลือก tap ที่ใกล้ที่สุดขึ้นไปจาก Standard Tap
+      <div class="note" style="margin-top:8px">ตรวจ Sensitivity: $PSM = I_{\text{fault,sec}} / I_p \ge 2$ (relay ต้องตอบสนอง fault ได้)</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <strong>คำนวณ PSM</strong>
+      $$PSM = \frac{I_{\text{fault,sec}}}{I_p} = \frac{I_{\text{fault,primary}} / \text{CTR}}{I_p}$$
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <strong>คำนวณ $T$ หรือหา TMS</strong><br>
+      ถ้าโจทย์ให้ TMS มา → แทนสูตร หา $T$ ตรงๆ<br>
+      ถ้าโจทย์ให้ $T$ ที่ต้องการ → แก้กลับหา TMS:
+      $$\text{TMS} = T \times \frac{PSM-1}{13.5} \quad (\text{VI}), \quad \text{TMS} = T \times \frac{PSM^{0.02}-1}{0.14} \quad (\text{SI})$$
+    </div>
+  </div>
+
+  <h3 id="q6-ex1">ตัวอย่างที่ 1 — Standard Inverse (SI) จาก Lecture</h3>
+
+  <div class="example">
+    <div class="ex-title">Feeder 1: 20 MVA, 115 kV, $I_{\text{fault}} = 2000$ A, SI Curve, TMS = 0.1</div>
+
+    <h4>Step 1: $I_{\text{load}}$</h4>
+    $$I_{\text{load}} = \frac{20 \times 10^6}{\sqrt{3} \times 115 \times 10^3} = \frac{20\,000\,000}{199\,186} \approx 100\text{ A}$$
+
+    <h4>Step 2: เลือก CTR</h4>
+    <p>โจทย์กำหนด CT = 600/5 → CTR = 120</p>
+    $$I_{\text{load,sec}} = \frac{100}{120} \times 5 = 0.833 \times 5/5 \approx 0.83\text{ A (secondary)}$$
+
+    <h4>Step 3: $I_p$</h4>
+    $$I_{p,\text{primary}} = 1.25 \times 100 = 125\text{ A}$$
+
+    <h4>Step 4: PSM</h4>
+    $$PSM = \frac{I_{\text{fault}}}{I_{p,\text{primary}}} = \frac{2000}{125} = 16$$
+
+    <h4>Step 5: Trip Time (SI)</h4>
+    $$PSM^{0.02} = 16^{0.02} = e^{0.02\ln 16} = e^{0.0555} = 1.0570$$
+    $$T = 0.1 \times \frac{0.14}{1.0570-1} = \frac{0.014}{0.0570} = \mathbf{0.246\text{ s}} \approx 0.25\text{ s}$$
+    <div class="note">ผ่าน: Feeder ตัดที่ $\approx 0.25$ s ซึ่งเป็น fastest zone</div>
+  </div>
+
+  <h3 id="q6-ex2">ตัวอย่างที่ 2 — Very Inverse (VI) หา TMS เอง</h3>
+
+  <div class="example">
+    <div class="ex-title">$I_{\text{load}} = 200$ A, $I_{\text{fault}} = 2000$ A, VI Curve, ต้องการ $T = 0.4$ s</div>
+
+    <h4>Step 2: เลือก CTR</h4>
+    $$\frac{200}{5} = 40 \to \text{เลือก CTR} = \frac{200}{5} = 40$$
+    $$I_{\text{load,sec}} = \frac{200}{40} = 5\text{ A}$$
+
+    <h4>Step 3: $I_p$</h4>
+    $$I_p = 1.25 \times 5 = 6.25\text{ A} \to \text{เลือก tap }125\% = 6.25\text{ A}$$
+
+    <h4>Step 4: PSM</h4>
+    $$I_{\text{fault,sec}} = \frac{2000}{40} = 50\text{ A}$$
+    $$PSM = \frac{50}{6.25} = 8.0$$
+    $$\text{Check: } \frac{50}{6.25} = 8 \ge 2 \quad\checkmark \text{ (Sensitive)}$$
+
+    <h4>Step 5: หา TMS จาก $T = 0.4$ s (VI)</h4>
+    $$T = \text{TMS} \times \frac{13.5}{PSM-1} \;\Rightarrow\; \text{TMS} = T \times \frac{PSM-1}{13.5} = 0.4 \times \frac{7}{13.5} = 0.207$$
+    <p>เลือก TMS = 0.2 (ค่าใกล้ที่สุด)</p>
+    <h4>ตรวจสอบ</h4>
+    $$T = 0.2 \times \frac{13.5}{8-1} = 0.2 \times 1.929 = \mathbf{0.386\text{ s} \approx 0.4\text{ s}} \quad\checkmark$$
+  </div>
+
+  <h3 id="q6-coord">Protection Coordination</h3>
+  <p>ข้อสอบอาจถาม TMS ของหลาย zone → ใช้หลัก <strong>margin 0.2 s ต่อ zone</strong></p>
+
+  <table>
+    <tr><th>Zone</th><th>Relay</th><th>Trip Time (s)</th><th>TMS (ตัวอย่าง)</th><th>หน้าที่</th></tr>
+    <tr><td>Feeder (fastest)</td><td>R6, R7</td><td><strong>0.2</strong></td><td>0.10</td><td>ป้องกัน Feeder</td></tr>
+    <tr><td>Transformer backup</td><td>R4, R5</td><td><strong>0.4</strong></td><td>0.25</td><td>Backup ถ้า Feeder relay fail</td></tr>
+    <tr><td>Incoming backup</td><td>R1</td><td><strong>0.6</strong></td><td>0.45</td><td>System backup สุดท้าย</td></tr>
+  </table>
+
+  <div class="formula-box">
+    <div class="label">Coordination Chain</div>
+    $$\text{Fault} \;\to\; \underbrace{\text{Feeder Relay (0.2s)}}_{\text{trip first}} \;\to\; \underbrace{\text{Transformer Relay (0.4s)}}_{\text{backup}} \;\to\; \underbrace{\text{Incoming Relay (0.6s)}}_{\text{system backup}}$$
+  </div>
+
+  <h3>Checklist ข้อสอบ</h3>
+  <ul class="checklist">
+    <li>คำนวณ $I_{\text{load}}$ จาก $S/(\sqrt{3}V)$ ถูกหน่วย (VA, V)</li>
+    <li>เลือก CTR ปัดขึ้นเป็น Standard และ $I_{\text{load,sec}} \le 5$ A</li>
+    <li>เลือก $I_p$ tap ที่ใกล้ขึ้นไป (ไม่ต่ำกว่า $1.25 \times I_{\text{load,sec}}$)</li>
+    <li>ตรวจ Sensitivity: $PSM \ge 2$ สำหรับ fault current</li>
+    <li>จำสูตร SI/VI/EI/LTI ให้ถูกต้อง (ผิด 1 ตัวผลผิดหมด)</li>
+    <li>ถ้าโจทย์ให้ $T$ และถามหา TMS → แก้สมการกลับ</li>
+    <li>ระบุ TMS ให้อยู่ใน range 0.025–1.0</li>
+  </ul>
+
+  <div class="warn"><strong>ผสมสูตร SI กับ VI ไม่ได้</strong> — อ่านโจทย์ให้ดีว่าให้ใช้ curve ไหน (Standard Inverse / Very Inverse / Extremely Inverse)</div>
+  <div class="warn"><strong>PSM ต้อง $\ge 2$</strong> — ถ้า PSM ต่ำเกินไปต้องลด $I_p$ ลง (เลือก tap ต่ำกว่า)</div>
+  <div class="note">ในข้อสอบถ้าให้ออกแบบทั้งระบบ → ทำ Feeder ก่อน → บวก margin 0.2s → ได้ trip time Transformer และ Incoming</div>
+</section>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:30px 0;color:#aaa;font-size:0.8rem">
+  PowerPlant Final — SUT EE · Chinnawat Dumklang · 2026 &nbsp;|&nbsp;
+  <span style="color:var(--gold)">สู้ๆ !</span>
+</div>
+
+</main>
+
+<script>
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 80) current = sec.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

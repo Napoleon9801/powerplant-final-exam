@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>PowerPlant Final Exam — Cheat Sheet A4</title>
+<style>
+/* ===== PRINT-FIRST DESIGN ===== */
+@page { size: A4; margin: 5mm 5mm 5mm 5mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Angsana New', 'TH Sarabun New', Arial, sans-serif; font-size: 7pt; line-height: 1.25; color: #000; background: #fff; }
+
+.page { width: 200mm; min-height: 285mm; display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; padding: 1mm; }
+.page-break { page-break-after: always; break-after: page; }
+.col { border: 0.3mm solid #999; padding: 1.5mm; }
+
+/* SECTION HEADERS */
+h1 { font-size: 8.5pt; font-weight: 900; background: #000; color: #fff; padding: 0.8mm 1.5mm; margin: -1.5mm -1.5mm 1.5mm -1.5mm; letter-spacing: 0.3mm; }
+h2 { font-size: 7.5pt; font-weight: 900; background: #333; color: #fff; padding: 0.4mm 1mm; margin: 1.5mm -1.5mm 1mm -1.5mm; }
+h3 { font-size: 7pt; font-weight: 900; background: #ddd; color: #000; padding: 0.3mm 0.8mm; margin: 1.2mm 0 0.5mm 0; }
+h4 { font-size: 7pt; font-weight: 700; color: #000; margin: 0.8mm 0 0.2mm 0; border-bottom: 0.2mm solid #666; }
+
+/* FORMULA BOX */
+.f { background: #f5f5f5; border: 0.3mm solid #999; border-left: 1mm solid #000; padding: 0.8mm 1mm; margin: 0.5mm 0; font-family: 'Courier New', monospace; font-size: 6.5pt; line-height: 1.3; }
+.fb { background: #e8e8e8; border-left: 1.5mm solid #000; padding: 0.5mm 1mm; margin: 0.3mm 0; font-family: 'Courier New', monospace; font-size: 6.5pt; }
+.warn { background: #ffe; border-left: 1.5mm solid #f00; padding: 0.5mm 1mm; margin: 0.3mm 0; font-size: 6.5pt; font-weight: 700; }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; margin: 0.5mm 0; font-size: 6.5pt; }
+th { background: #333; color: #fff; padding: 0.3mm 0.8mm; text-align: left; font-weight: 700; }
+td { padding: 0.3mm 0.8mm; border-bottom: 0.2mm solid #ccc; vertical-align: top; }
+tr:nth-child(even) td { background: #f5f5f5; }
+
+/* LISTS */
+ul, ol { padding-left: 3mm; margin: 0.3mm 0; }
+li { margin-bottom: 0.2mm; }
+p { margin: 0.3mm 0; }
+
+/* BUS DIAGRAMS */
+.bus-box { border: 0.3mm solid #000; padding: 0.5mm; margin: 0.3mm 0; font-size: 6pt; font-family: monospace; line-height: 1.2; }
+.bus-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1mm; margin: 0.5mm 0; }
+
+.tag { display: inline; background: #333; color: #fff; font-size: 5.5pt; padding: 0mm 0.8mm; font-weight: 700; border-radius: 0.5mm; }
+.ok { color: #005500; font-weight: 700; }
+.bad { color: #990000; font-weight: 700; }
+.box { display: inline-block; border: 0.3mm solid #000; padding: 0mm 1mm; font-size: 6pt; }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1 FRONT ==================== -->
+<div class="page page-break">
+
+<!-- LEFT COLUMN -->
+<div class="col">
+  <h1>⚡ PowerPlant Final — Cheat Sheet  [Ch6 · Ch7 · Ch8-Touch/RG]</h1>
+
+  <!-- CH6 ECONOMIC LOAD DISPATCH -->
+  <h2>บทที่ 6 — Economic Load Dispatch (ELD)</h2>
+
+  <h3>Cost Function & Incremental Cost (IC)</h3>
+  <div class="f">F_i(P_i) = a_i + b_i·P_i + c_i·P_i²   [฿/h หรือ $/h]
+IC_i = dF_i/dP_i = b_i + 2·c_i·P_i   [฿/MWh]
+เงื่อนไขเหมาะสม: λ* = IC_1 = IC_2 = ··· = IC_n
+P_i = (λ* − b_i) / (2·c_i)</div>
+
+  <h4>Lambda Iteration Algorithm</h4>
+  <ol>
+    <li>สมมติ λ เริ่มต้น</li>
+    <li>คำนวณ P_i = (λ − b_i)/(2c_i) แต่ละ unit</li>
+    <li>ตรวจ P_i,min ≤ P_i ≤ P_i,max (ถ้าเกิน → fix ที่ limit)</li>
+    <li>ตรวจ ΣP_i = P_D (demand)  ← ถ้าไม่เท่า → ปรับ λ</li>
+    <li>ถ้า ΣP_i &lt; P_D → เพิ่ม λ | ถ้า ΣP_i &gt; P_D → ลด λ</li>
+  </ol>
+  <div class="warn">⚠ Unit ที่ถูก fix ที่ limit → ไม่ต้องคิด IC แล้ว ลบออกจาก lambda loop</div>
+
+  <h3>Priority-List Method (Field Cost Base List)</h3>
+  <div class="f">Average Cost = F_i(P_test) / P_test   [฿/MWh]
+P_test = Min / Average / Max ← อาจารย์กำหนดมาให้เลือก 1</div>
+  <ol>
+    <li>คำนวณ Avg Cost แต่ละ unit ที่จุด P_test ที่กำหนด</li>
+    <li>เรียงลำดับ: ต้นทุนต่ำสุด → เริ่มใช้ก่อน (Priority 1)</li>
+    <li>เพิ่ม unit ทีละตัวจนครบ demand แต่ละ time period</li>
+  </ol>
+  <div class="f">ตัวอย่าง: F(P) = 500 + 7P + 0.01P²
+ที่ P_avg = 200 MW → F(200) = 500 + 1400 + 400 = 2300 ฿/h
+Avg Cost = 2300 / 200 = 11.5 ฿/MWh → เปรียบเทียบกับ unit อื่น</div>
+
+  <h3>IC-Based Priority</h3>
+  <div class="f">IC = b + 2c·P_test   [฿/MWh]
+IC ต่ำ → Priority สูง (เริ่มใช้ก่อน)</div>
+
+  <!-- CH7 AGC -->
+  <h2>บทที่ 7 — AGC (Automatic Generation Control)</h2>
+
+  <h3>ACE — Area Control Error</h3>
+  <div class="fb">ACE_i = ΔP_tie,i + B_i × Δf</div>
+  <div class="f">ΔP_tie,i = กำลังส่งออกจริง − กำลังส่งออกตามกำหนด (Scheduled)
+B_i     = Frequency Bias Setting [MW/Hz]
+Δf      = f_actual − f_nominal  [Hz]  (ปกติ = 0 ที่ steady state)</div>
+
+  <h4>2-Area System</h4>
+  <div class="f">ACE_1 = ΔP_tie,12 + B_1 · Δf
+ACE_2 = ΔP_tie,21 + B_2 · Δf
+โดย: ΔP_tie,21 = −ΔP_tie,12  (กระแสออกจาก Area1 = เข้า Area2)</div>
+
+  <h4>3-Area System</h4>
+  <div class="f">ACE_i = Σ(ΔP_tie,ij สุทธิของ Area i) + B_i · Δf
+ΔP_tie,i = กำลังส่งออกสุทธิ Area i = Σ ΔP_ij (+ = ส่งออก, − = รับเข้า)</div>
+
+  <h3>การแปลผล ACE → Action</h3>
+  <table>
+    <tr><th>ACE</th><th>ความหมาย</th><th>Action</th></tr>
+    <tr><td><span class="bad">ACE &gt; 0</span></td><td>ผลิตมากเกิน / ส่งออกเกิน</td><td class="bad">ลด generation ↓</td></tr>
+    <tr><td><span class="ok">ACE &lt; 0</span></td><td>ผลิตน้อยเกิน / รับเข้าเกิน</td><td class="ok">เพิ่ม generation ↑</td></tr>
+    <tr><td>ACE = 0</td><td>สมดุล</td><td>คง generation</td></tr>
+  </table>
+
+  <h4>Power Balance ใน Area</h4>
+  <div class="f">ΔP_G,i − ΔP_D,i = ΔP_tie,net,i
+ΔP_tie,net = ΔP_G − ΔP_D
+ถ้า ΔP_D เพิ่ม (disturbance) → ΔP_tie,net เป็นลบ → ACE &lt; 0 → เพิ่ม Gen</div>
+
+  <h4>Steady-State Frequency (2-Area)</h4>
+  <div class="f">Δf_ss = −ΔP_D_total / (β_1 + β_2)
+β_i = D_i + 1/R_i  [MW/Hz]  (Freq Bias Total)
+ΔP_tie,12_ss = β_2·ΔP_D1 / (β_1+β_2) − ΔP_D1  (ถ้า ΔP_D เฉพาะใน Area1)</div>
+
+</div><!-- end left col -->
+
+<!-- RIGHT COLUMN -->
+<div class="col">
+  <h1>⚡ Ch8 — Touch/Step Voltage &amp; Ground Grid Resistance</h1>
+
+  <!-- CH8 TOUCH/STEP VOLTAGE -->
+  <h2>บทที่ 8 — Touch &amp; Step Voltage (IEEE 80)</h2>
+
+  <h3>Allowable Touch Voltage</h3>
+  <div class="fb">E_touch = (1000 + 1.5·Cs·ρs) × K / √t_s   [V]</div>
+
+  <h3>Allowable Step Voltage</h3>
+  <div class="fb">E_step = (1000 + 6·Cs·ρs) × K / √t_s   [V]</div>
+
+  <div class="f">K   = 0.116  (คน 50 kg)  หรือ  0.157  (คน 70 kg)
+Cs  = derating factor ของผิวชั้นบน  (= 1.0 ถ้าไม่มี surface material)
+ρs  = soil resistivity ผิวชั้นบน (Ω·m) — ถ้าไม่มี gravel → ใช้ ρs = ρ
+t_s = fault clearing time (s)  — ยิ่งเร็ว ยิ่งทนได้มากขึ้น</div>
+
+  <h4>การแปลผล</h4>
+  <table>
+    <tr><th>เงื่อนไข</th><th>ผล</th></tr>
+    <tr><td>E_measured ≤ E_allowable</td><td class="ok">✓ SAFE — ปลอดภัย</td></tr>
+    <tr><td>E_measured &gt; E_allowable</td><td class="bad">✗ UNSAFE — ต้องแก้ไข</td></tr>
+  </table>
+  <div class="warn">⚠ ข้อสอบมักให้ E_touch_measured และ E_step_measured มาเปรียบ เลือก K ตาม body weight ที่โจทย์กำหนด</div>
+
+  <!-- CH8 GROUND GRID RESISTANCE -->
+  <h2>บทที่ 8 — Ground Grid Resistance (R_G)</h2>
+
+  <h3>Sverak Formula (IEEE 80)</h3>
+  <div class="fb">R_G = ρ × [ 1/L_T + 1/√(20·A) × (1 + 1/(1 + h·√(20/A))) ]   [Ω]</div>
+
+  <div class="f">ρ   = ความต้านทานดิน (Soil Resistivity) [Ω·m]
+L_T = ความยาวรวมของสายกราวด์ทั้งหมด [m]
+A   = พื้นที่กริด (กว้าง × ยาว) [m²]
+h   = ความลึกของการฝัง (burial depth) [m]</div>
+
+  <div class="warn">⚠⚠ อาจารย์เน้น: ระวังการแทนค่า h ให้ถูกต้องในสมการ — อ่านโจทย์ให้ดีว่าให้ h มาเป็น m หรือ ft (แปลงหน่วยก่อน)</div>
+
+  <h4>วิธีอ่านโจทย์กริด</h4>
+  <ol>
+    <li>นับจำนวนตาราง → หาความกว้าง (W) และความยาว (L) ของกริดรวม → A = W × L</li>
+    <li>นับเส้น Conductor → L_T = (จำนวนแนวนอน × L) + (จำนวนแนวตั้ง × W)</li>
+    <li>อ่านค่า h (burial depth) และ ρ จากโจทย์</li>
+    <li>แทนสมการ Sverak</li>
+  </ol>
+
+  <h4>ตัวอย่างเร็ว: กริด 3×3 (spacing 10m), h=0.5m, ρ=100 Ω·m</h4>
+  <div class="f">A = 20×20 = 400 m²
+L_T = 3 แนวนอน×20m + 3 แนวตั้ง×20m = 60+60 = 120 m
+(แต่ตัวอย่างนี้สำหรับฝึกดูสูตร — โจทย์จริงให้ค่ามาเลย)</div>
+
+  <!-- CH8 BUS ARRANGEMENTS -->
+  <h2>บทที่ 8 — Bus Arrangements (วาดได้เลย)</h2>
+
+  <div class="bus-grid">
+    <div class="bus-box">
+      <b>① Single Bus</b><br>
+      ─[CB]─┬─[CB]─<br>
+      ══════BUS═════<br>
+      CB ต่อ feeder<br>
+      CB เสีย→ตัดไฟทั้ง bus
+    </div>
+    <div class="bus-box">
+      <b>② Main &amp; Transfer</b><br>
+      ══════BUS-M═══<br>
+      ─[BCB]─<br>
+      ══════BUS-T═══<br>
+      [CB] feeder + Bypass SW<br>
+      ซ่อมได้ไม่ตัดไฟ
+    </div>
+    <div class="bus-box">
+      <b>③ Dbl Bus Sgl CB</b><br>
+      ══════BUS-1═══<br>
+      ─[CB]─(SW)<br>
+      ──────(SW)<br>
+      ══════BUS-2═══<br>
+      + Bus-Coupler CB
+    </div>
+    <div class="bus-box">
+      <b>④ Dbl Bus Dbl CB</b><br>
+      ══════BUS-1═══<br>
+      ─[CB1]─●─[CB2]─<br>
+      ══════BUS-2═══<br>
+      2 CB ต่อ feeder<br>
+      สูญเสีย 1 CB→OK
+    </div>
+    <div class="bus-box">
+      <b>⑤ Ring Bus</b><br>
+      ─[CB]─┐<br>
+      F1  [CB][CB]  F2<br>
+      └─[CB]─┘<br>
+      n feeder = n CB<br>
+      ไม่มี bus bar
+    </div>
+    <div class="bus-box">
+      <b>⑥ Breaker&amp;Half</b><br>
+      ══BUS-1══<br>
+      [CB1]<br>
+      F─●─[CB2]<br>
+      [CB3]<br>
+      ══BUS-2══<br>
+      3 CB / 2 feeder
+    </div>
+  </div>
+
+  <h4>เปรียบเทียบ Bus Arrangement</h4>
+  <table>
+    <tr><th>Type</th><th>CB/Feeder</th><th>Reliability</th><th>Cost</th></tr>
+    <tr><td>Single Bus</td><td>1</td><td>ต่ำ</td><td>ถูก</td></tr>
+    <tr><td>Main&amp;Transfer</td><td>1+BCB</td><td>ปานกลาง</td><td>กลาง</td></tr>
+    <tr><td>Dbl Bus Sgl CB</td><td>1</td><td>ปานกลาง</td><td>กลาง</td></tr>
+    <tr><td>Dbl Bus Dbl CB</td><td>2</td><td>สูง</td><td>แพง</td></tr>
+    <tr><td>Ring Bus</td><td>1</td><td>สูง</td><td>กลาง</td></tr>
+    <tr><td>Breaker&amp;½</td><td>1.5</td><td>สูงมาก</td><td>แพง</td></tr>
+  </table>
+
+</div><!-- end right col -->
+</div><!-- end page 1 -->
+
+<!-- ==================== PAGE 2 BACK ==================== -->
+<div class="page">
+
+<!-- LEFT COLUMN -->
+<div class="col">
+  <h1>⚡ Ch9 — Smart Grid / Protocols / SBO / Gateway</h1>
+
+  <h2>บทที่ 9 — SCADA Protocol Comparison (สำคัญมาก)</h2>
+  <table>
+    <tr><th>Feature</th><th>Modbus</th><th>DNP3</th><th>IEC-104</th><th>IEC 61850</th></tr>
+    <tr><td>ยุค</td><td>1979</td><td>1993</td><td>2000s</td><td>ปัจจุบัน</td></tr>
+    <tr><td>Architecture</td><td>Master-Slave</td><td>Master-Outstation</td><td>Control-RTU</td><td>Peer-to-Peer</td></tr>
+    <tr><td>Communication</td><td>Polling only</td><td>Poll+Event</td><td>Cyclic+Spont.</td><td>Peer-to-peer</td></tr>
+    <tr><td>Data Model</td><td>Register</td><td>Object</td><td>ASDU</td><td>Logical Node</td></tr>
+    <tr><td>Event Report</td><td class="bad">✗</td><td class="ok">✓</td><td>บางส่วน</td><td class="ok">✓</td></tr>
+    <tr><td>Timestamp</td><td class="bad">✗</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">Very High</td></tr>
+    <tr><td>Speed</td><td>ต่ำ</td><td>ปานกลาง</td><td>Real-time</td><td class="ok">สูงมาก</td></tr>
+    <tr><td>Network</td><td>Serial/TCP</td><td>Serial/TCP</td><td>TCP/IP</td><td class="ok">Ethernet</td></tr>
+    <tr><td>Protection</td><td class="bad">✗</td><td class="bad">✗</td><td class="bad">✗</td><td class="ok">GOOSE</td></tr>
+    <tr><td>Security</td><td class="bad">✗</td><td>DNP3-SA</td><td>บางส่วน</td><td>มี</td></tr>
+    <tr><td>ใช้ใน</td><td>Factory, PLC</td><td>PEA/MEA utility</td><td>ยุโรป/เอเชีย</td><td>Digital Sub.</td></tr>
+  </table>
+
+  <h3>Modbus Data Types &amp; Function Codes</h3>
+  <table>
+    <tr><th>Type</th><th>Address</th><th>Description</th></tr>
+    <tr><td>Coil</td><td>0xxxx</td><td>Digital Output</td></tr>
+    <tr><td>Discrete Input</td><td>1xxxx</td><td>Digital Input</td></tr>
+    <tr><td>Input Register</td><td>3xxxx</td><td>Analog Input (RO)</td></tr>
+    <tr><td><b>Holding Register</b></td><td>4xxxx</td><td>Analog Out/Mem (R/W)</td></tr>
+  </table>
+  <div class="f">FC 01=Read Coil | 02=Read DI | <b>03=Read HR</b>★ | 04=Read IR
+FC 05=Write Coil | 06=Write Reg | 16=Write Multiple
+Frame: [SlaveID][FC][Data][CRC]  ← CRC=Cyclic Redundancy Check</div>
+
+  <h3>DNP3 Event Classes</h3>
+  <table>
+    <tr><th>Class</th><th>Priority</th><th>ตัวอย่าง</th></tr>
+    <tr><td>Class 1</td><td>High</td><td>Breaker Trip</td></tr>
+    <tr><td>Class 2</td><td>Medium</td><td>Alarm</td></tr>
+    <tr><td>Class 3</td><td>Low</td><td>Status Change</td></tr>
+    <tr><td>Class 0</td><td>Static</td><td>Measurement</td></tr>
+  </table>
+  <p>Poll Order: Class1→2→3→0 | Outstation ส่ง Event เองได้ (ไม่ต้องรอ Poll)</p>
+
+  <h3>IEC 61850 — 3 Services</h3>
+  <table>
+    <tr><th>Service</th><th>ใช้สำหรับ</th><th>Latency</th></tr>
+    <tr><td><b>MMS</b></td><td>SCADA monitoring/control</td><td>Normal</td></tr>
+    <tr><td><b>GOOSE</b></td><td>Protection signaling</td><td><b>&lt;4 ms</b></td></tr>
+    <tr><td><b>SV</b></td><td>I/V sampling</td><td>Very Fast</td></tr>
+  </table>
+  <p>Logical Nodes: <b>XCBR</b>=CB | <b>PTOC</b>=Overcurrent Prot. | <b>MMXU</b>=Measurement | <b>CSWI</b>=Switch Control</p>
+
+  <h2>SBO — Select Before Operate</h2>
+  <div class="f">Step 1 SELECT: เลือกอุปกรณ์ → ระบบตรวจ Interlock → "Selected OK" + เปิด Timer 10-30s
+Step 2 OPERATE: กดคำสั่ง (OPEN/CLOSE) → ระบบตรวจ Interlock อีกครั้ง → ส่งคำสั่ง → Feedback
+TIMEOUT: ถ้าเกินเวลา → ต้อง Select ใหม่</div>
+  <h4>SBO ช่วยลด Human Error อย่างไร?</h4>
+  <ul>
+    <li>ป้องกันคลิกผิด Device — บังคับเห็นชื่ออุปกรณ์ชัดใน Select step</li>
+    <li>ระบบตรวจ Interlock Logic ก่อนส่งคำสั่งทุกครั้ง</li>
+    <li>Timeout ป้องกัน Double Command / คำสั่งค้างเก่า</li>
+    <li>BCU (Bay Control Unit) double-check ก่อน Operate</li>
+    <li>ถ้าไม่มี SBO → DS ปิดขณะมีไฟ → Arc Flash, Breaker Trip ผิด → Blackout</li>
+  </ul>
+
+  <h2>Substation Gateway — หน้าที่</h2>
+  <ol>
+    <li><b>Protocol Conversion</b> — IEC 61850 ↔ IEC-104/DNP3/Modbus</li>
+    <li><b>Data Concentration</b> — รวมข้อมูล IED → SCADA</li>
+    <li><b>Event &amp; Timestamp</b> — SOE, Event Buffer</li>
+    <li><b>Control Command</b> — SCADA → Field Devices</li>
+    <li><b>Cybersecurity</b> — Authentication, Encryption, Firewall</li>
+  </ol>
+
+  <h2>คำย่อที่ออกสอบ Ch9</h2>
+  <table>
+    <tr><td><b>SCADA</b></td><td>Supervisory Control and Data Acquisition</td></tr>
+    <tr><td><b>EMS</b></td><td>Energy Management System</td></tr>
+    <tr><td><b>DAS</b></td><td>Distribution Automation System</td></tr>
+    <tr><td><b>HMI</b></td><td>Human Machine Interface</td></tr>
+    <tr><td><b>IED</b></td><td>Intelligent Electronic Device</td></tr>
+    <tr><td><b>RTU</b></td><td>Remote Terminal Unit</td></tr>
+    <tr><td><b>PLC</b></td><td>Programmable Logic Controller</td></tr>
+    <tr><td><b>GOOSE</b></td><td>Generic Object-Oriented Substation Event</td></tr>
+    <tr><td><b>MMS</b></td><td>Manufacturing Message Specification</td></tr>
+    <tr><td><b>SV</b></td><td>Sampled Values</td></tr>
+    <tr><td><b>SBO</b></td><td>Select Before Operate</td></tr>
+    <tr><td><b>BCU</b></td><td>Bay Control Unit</td></tr>
+    <tr><td><b>FRTU</b></td><td>Feeder Remote Terminal Unit</td></tr>
+    <tr><td><b>PLC (Comms)</b></td><td>Power Line Carrier (30–500 kHz)</td></tr>
+    <tr><td><b>OPGW</b></td><td>Optical Ground Wire</td></tr>
+    <tr><td><b>ASK/FSK/PSK</b></td><td>Amplitude/Frequency/Phase Shift Keying</td></tr>
+    <tr><td><b>PCM</b></td><td>Pulse Code Modulation (A/D)</td></tr>
+    <tr><td><b>ACE</b></td><td>Area Control Error</td></tr>
+    <tr><td><b>EGAT/PEA/MEA</b></td><td>กฟผ./กฟภ./กฟน.</td></tr>
+  </table>
+</div><!-- end left col -->
+
+<!-- RIGHT COLUMN -->
+<div class="col">
+  <h1>⚡ Ch10 — Protection Relay Setting (วิธีเลือกค่าทั้งหมด)</h1>
+
+  <h2>บทที่ 10 — Relay Setting ขั้นตอน</h2>
+
+  <h3>Step 1: เลือก CT Ratio (CTR)</h3>
+  <div class="f">CTR = I_load_primary / I_secondary_rated
+ปกติ I_secondary_rated = 5 A
+CTR = I_load / 5  → ปัดขึ้นเป็น Standard Ratio
+
+Standard CT Ratio: 50/5, 75/5, 100/5, 150/5, 200/5,
+                   300/5, 400/5, 500/5, 600/5, 800/5, 1000/5</div>
+  <div class="f">ตัวอย่าง: I_load = 240 A
+CTR = 240/5 = 48 → เลือก 50/5 (CTR = 10)
+หรือ 100/5 (CTR = 20) ถ้าต้องการ margin มากกว่า</div>
+
+  <h3>Step 2: เลือก Pick-up Current (I_p)</h3>
+  <div class="f">I_p = K × I_load_secondary = K × (I_load / CTR)
+K = 1.25 ถึง 1.5  (ต้องไม่ trip ขณะ normal load)
+I_p ต้อง &lt; I_fault_minimum_secondary / 2  (เพื่อ sensitivity)
+I_load_secondary = I_load / CTR  [A secondary]</div>
+  <div class="f">ตัวอย่าง: I_load = 240A, CTR=50/5=10
+I_load_secondary = 240/10 = 24 A  → ผิดปกติ (relay rated 5A)
+หมายเหตุ: I_load_secondary = I_load/CTR ต้องไม่เกิน 5A ใน normal load</div>
+  <div class="warn">⚠ I_p ต้องเป็น tap setting ที่มีบน relay (เช่น 50%, 75%, 100%, 125%, 150%, 175%, 200% ของ 5A)</div>
+
+  <h3>Step 3: คำนวณ PSM</h3>
+  <div class="fb">PSM = I_fault_secondary / I_p_set
+     = (I_fault / CTR) / I_p</div>
+  <div class="f">I_fault = กระแสลัดวงจรที่จุดป้องกัน (จากโจทย์)
+I_fault_secondary = I_fault / CTR
+I_p_set = ค่า pick-up ที่ตั้งบน relay [A]
+PSM ต้อง &gt; 1.0 เพื่อให้ relay ทำงาน</div>
+
+  <h3>Step 4: เลือก TMS</h3>
+  <div class="f">TMS = 0.025 ถึง 1.0 (ปกติ)
+เลือกให้ relay trip ภายในเวลาที่ต้องการ
+→ หรือ graded กับ downstream relay (CTI = 0.3–0.5 s)</div>
+
+  <h3>Step 5: คำนวณ Trip Time (T)</h3>
+  <div class="warn">⚠ ต้องรู้ว่าโจทย์ใช้ IDMT Curve แบบไหน — ถามอาจารย์หรือดูจาก relay spec</div>
+
+  <h4>IEC/BS IDMT Relay Curves</h4>
+  <div class="fb">Standard Inverse (SI):
+  T = TMS × 0.14 / (PSM^0.02 − 1)
+
+Very Inverse (VI):
+  T = TMS × 13.5 / (PSM − 1)
+
+Extremely Inverse (EI):
+  T = TMS × 80 / (PSM² − 1)
+
+Long Time Inverse (LTI):
+  T = TMS × 120 / (PSM − 1)
+
+Definite Time: T = TMS (fixed)</div>
+
+  <h4>ตัวอย่างการคำนวณ</h4>
+  <div class="f">โจทย์: I_load=300A, I_fault=3000A, ต้องการ T=0.3s
+1. เลือก CTR = 300/5 = 60 → ใช้ 300/5 standard (CTR=60)
+2. I_load_sec = 300/60 = 5A → เลือก I_p = 125% × 5 = 6.25A
+   (เลือก tap 125% = 1.25× 5A = 6.25 A)
+3. I_fault_sec = 3000/60 = 50A
+   PSM = 50 / 6.25 = 8.0
+4. เลือก TMS = 0.1 (ลองก่อน)
+5. Very Inverse: T = 0.1 × 13.5/(8−1) = 0.1×1.929 = 0.19s
+   ถ้าต้องการ 0.3s → TMS = 0.3/1.929 = 0.156 → เลือก TMS=0.15 หรือ 0.2</div>
+
+  <h4>Quick Reference: Standard Inverse ที่ PSM ต่างๆ</h4>
+  <table>
+    <tr><th>PSM</th><th>SI factor*</th><th>VI factor*</th><th>EI factor*</th></tr>
+    <tr><td>2</td><td>13.5</td><td>13.5</td><td>26.7</td></tr>
+    <tr><td>3</td><td>8.16</td><td>6.75</td><td>10.0</td></tr>
+    <tr><td>4</td><td>6.27</td><td>4.5</td><td>5.33</td></tr>
+    <tr><td>5</td><td>5.31</td><td>3.375</td><td>3.33</td></tr>
+    <tr><td>8</td><td>3.93</td><td>1.929</td><td>1.27</td></tr>
+    <tr><td>10</td><td>3.47</td><td>1.5</td><td>0.808</td></tr>
+    <tr><td>20</td><td>2.52</td><td>0.71</td><td>0.211</td></tr>
+  </table>
+  <p>*factor = formula_numerator/(denominator) เมื่อ TMS=1 | T_actual = TMS × factor</p>
+
+  <h2>Ch10 — Theory สำคัญ</h2>
+
+  <h3>Protection System Components</h3>
+  <ul>
+    <li><b>CT</b> (Current Transformer) — แปลงกระแสสูง → 5A/1A</li>
+    <li><b>VT/PT</b> (Voltage Transformer) — แปลงแรงดันสูง → 110V/115V</li>
+    <li><b>Relay</b> — ตรวจสอบค่าผิดปกติ → ส่ง trip signal</li>
+    <tr><td><b>CB</b> (Circuit Breaker) — ตัดวงจร</td></tr>
+    <li><b>Battery/DC Supply</b> — จ่ายไฟให้ relay ทำงานได้แม้ AC fault</li>
+  </ul>
+
+  <h3>Relay Types ที่ควรรู้</h3>
+  <table>
+    <tr><th>Relay</th><th>ตรวจจับ</th><th>Application</th></tr>
+    <tr><td>Overcurrent (OC)</td><td>I เกิน I_pickup</td><td>Feeder, Distribution</td></tr>
+    <tr><td>Differential</td><td>ΔI = I_in − I_out</td><td>Transformer, Bus, Generator</td></tr>
+    <tr><td>Distance (Z)</td><td>Z = V/I &lt; Z_set</td><td>Transmission Line</td></tr>
+    <tr><td>Under-voltage</td><td>V &lt; V_set</td><td>Bus protection</td></tr>
+    <tr><td>Under-frequency</td><td>f &lt; f_set</td><td>Load shedding</td></tr>
+  </table>
+
+  <h3>IDMT (Inverse Definite Minimum Time)</h3>
+  <p>ยิ่ง fault กระแสสูง → ตัดวงจรเร็วขึ้น (Inverse characteristic)</p>
+  <div class="f">Plug Setting (PS) = I_p / I_relay_rated × 100%
+PSM = I_fault_secondary / I_p_set = (I_fault/CTR) / I_p</div>
+
+  <h3>Coordination / Grading (เผื่อรู้)</h3>
+  <div class="f">Coordination Time Interval (CTI) = 0.3–0.5 s
+Relay ใกล้ fault ทำงานก่อน (fastest) → relay บน upstream ทำงานช้ากว่า
+T_upstream = T_downstream + CTI</div>
+
+  <h3>สรุป Key Formulas ทั้งหมด</h3>
+  <div class="fb">Ch6: IC = b + 2cP | P_opt = (λ−b)/2c | ΣP = P_D
+Ch7: ACE = ΔP_tie + B·Δf | ACE&gt;0→ลด | ACE&lt;0→เพิ่ม
+Ch8-Touch: E_touch = (1000+1.5Cs·ρs)×0.116/√t
+Ch8-Step:  E_step  = (1000+6·Cs·ρs) ×0.116/√t  [50kg]
+Ch8-RG: R_G = ρ[1/L_T + 1/√(20A)·(1+1/(1+h√(20/A)))]
+Ch10-PSM: PSM = (I_fault/CTR)/I_p
+Ch10-SI:  T = TMS×0.14/(PSM^0.02−1)
+Ch10-VI:  T = TMS×13.5/(PSM−1)
+Ch10-EI:  T = TMS×80/(PSM²−1)</div>
+
+</div><!-- end right col -->
+</div><!-- end page 2 -->
+
+</body>
+</html>
