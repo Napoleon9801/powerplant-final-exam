@@ -1,26 +1,53 @@
-# PowerPlant Final — NotebookLM Export
+# PowerPlant Engineering — Final Exam Study Guide
 
-- **Source notebook:** PowerPlant Final
-- **Notebook ID:** `554c0f2f-9f05-4b77-ba1f-79a25eb92204`
-- **Exported:** 2026-05-17
-- **Content type:** Indexed fulltext from NotebookLM (PDF text extraction + MP4 transcripts). Original PDF/MP4 binaries are NOT downloadable from NotebookLM — only the indexed text.
+**SUT EE · 2026 · Chinnawat Dumklang**
 
-## Files
+> Comprehensive exam preparation for PowerPlant Engineering (โรงไฟฟ้า) final exam.
+> Covers all 6 written questions (30 pts) with full worked examples sourced directly from lecture slides.
 
-### Lecture videos (transcripts)
-- `Lectures_17-30_merged.md` — all 14 MP4 transcripts (lectures 17-30) concatenated in order. Individual `NN_mp4.md` files were merged then deleted on 2026-05-17.
+## Live Site
 
-### PDF chapters
-- `Chapter_06_Economic_Dispatch.md`
-- `Chapter_07_Automatic_Power_Generation.md`
-- `Chapter_08_Electric_Power_Substation.md`
-- `Chapter_09_Smart_Grid_Digital_Substation.md`
-- `Chapter_10_Substation_Protection_Relaying.md`
+**[napoleon9801.github.io/powerplant-final-exam/PowerPlant_Final_Exam_Complete.html](https://napoleon9801.github.io/powerplant-final-exam/PowerPlant_Final_Exam_Complete.html)**
 
-### Helpers
-- `_manifest.json` — id ↔ filename ↔ char count map
-- `_download.ps1` — re-run script (idempotent; overwrites .md files)
+## What's Inside
 
-## Notes
-- No artifacts (podcasts/quizzes/reports/notes) existed in the notebook at export time.
-- To re-pull (e.g. after adding sources): `& .\_download.ps1` from PowerShell.
+| File | Description |
+|------|-------------|
+| `PowerPlant_Final_Exam_Complete.html` | Main study guide — all 6 written questions, MathJax equations, worked examples, warnings |
+| `Final_Exam_Guide.md` | Exam question breakdown, formulas cheat sheet |
+| `Final_Exam_Cheatsheet.html` | Quick-reference cheatsheet |
+| `chapter6/` – `chapter10/` | Lecture slide images (PNG) per chapter |
+
+## Topics Covered
+
+| # | Chapter | Topic |
+|---|---------|-------|
+| Q1 | Ch6 | **Economic Load Dispatch** — Priority List, Priority Index σ, Unit Commitment Table, Lambda Iteration |
+| Q2 | Ch7 | **AGC Multi-Area** — ACE formula, 2-area & 3-area tie-line balance |
+| Q3 | Ch8 | **Bus Arrangement** — 7 types (SBSB, DBDB, MATB, DMAST, DBSB, Ring Bus, BAAH) |
+| Q4 | Ch8 | **Touch & Step Voltage** — IEEE 80, derating factor Cs, 3 surface material cases |
+| Q5 | Ch8 | **Ground Grid Resistance** — Sverak formula, L_T counting from grid diagram |
+| Q6 | Ch10 | **Relay Setting (IDMT)** — IEC 60255, 4 curve types, 5-step method, protection coordination |
+
+## Exam Format
+
+- **Total:** 50 points
+- **Section A:** 60 multiple choice → 20 pts
+- **Section B:** 6 written questions × 5 pts = 30 pts
+
+## Key Formulas at a Glance
+
+**Priority Index**
+$$\sigma_i = \frac{F_i(P_{i,\max})}{P_{i,\max}} \quad [\text{฿/MWh}]$$
+
+**Area Control Error**
+$$\text{ACE}_i = \Delta P_{\text{tie},i} + B_i \cdot \Delta f$$
+
+**Touch & Step Voltage (IEEE 80)**
+$$E_{\text{touch}} = (1000 + 1.5 \cdot C_s \cdot \rho_s) \cdot \frac{0.116}{\sqrt{t_s}}$$
+
+**Sverak Ground Grid Resistance**
+$$R_G = \rho_E \left[\frac{1}{L_T} + \frac{1}{\sqrt{20A}}\left(1 + \frac{1}{1 + h\sqrt{20/A}}\right)\right]$$
+
+**IDMT Operating Time (Standard Inverse)**
+$$T = \text{TMS} \times \frac{0.14}{\text{PSM}^{0.02} - 1}$$
