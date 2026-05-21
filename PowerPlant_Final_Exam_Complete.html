@@ -817,15 +817,32 @@ F1─●            ●─F2
 
   <h3>สูตรหลัก</h3>
 
+  <div class="note">
+    <strong>เข้าใจ E<sub>allowable</sub> ก่อน:</strong> ค่าที่ได้จากสูตร IEEE 80 ด้านล่าง (E<sub>touch</sub>, E<sub>step</sub>) <u>คือ E<sub>allowable</sub> เอง</u>
+    — แปลว่าเป็น <strong>"แรงดันสูงสุดที่ร่างกายคนทนได้อย่างปลอดภัย"</strong>
+    เวลาตัดสิน safety เอาไปเทียบกับ <strong>E<sub>actual</sub></strong> ที่วัดได้/คำนวณจาก fault จริงในสถานี
+  </div>
+
   <div class="formula-box">
-    <div class="label">Allowable Touch &amp; Step Voltage (IEEE 80)</div>
-    $$E_{\text{touch}} = \left(1000 + 1.5\, C_s\, \rho_s\right) \frac{K}{\sqrt{t_s}} \quad [\text{V}]$$
-    $$E_{\text{step}} = \left(1000 + 6\, C_s\, \rho_s\right) \frac{K}{\sqrt{t_s}} \quad [\text{V}]$$
+    <div class="label">Allowable Touch &amp; Step Voltage (IEEE 80) — ค่า E<sub>allowable</sub></div>
+    $$E_{\text{touch (allow)}} = \left(1000 + 1.5\, C_s\, \rho_s\right) \frac{K}{\sqrt{t_s}} \quad [\text{V}]$$
+    $$E_{\text{step (allow)}} = \left(1000 + 6\, C_s\, \rho_s\right) \frac{K}{\sqrt{t_s}} \quad [\text{V}]$$
     <table style="margin-top:12px">
       <tr><th>Body Weight</th><th>$K$</th></tr>
       <tr><td>50 kg</td><td><strong>0.116</strong></td></tr>
       <tr><td>70 kg</td><td><strong>0.157</strong></td></tr>
     </table>
+  </div>
+
+  <div class="formula-box" style="background:#fff0f5;border-color:#e74c3c">
+    <div class="label" style="color:#c0392b">E<sub>actual</sub> — แรงดันที่เกิดขึ้นจริงตอน fault (IEEE 80 — Mesh/Step Voltage)</div>
+    $$E_{\text{touch (actual)}} = \frac{K_m \cdot K_i \cdot \rho_E \cdot I_G}{L_C} \quad \text{(Mesh Voltage)}$$
+    $$E_{\text{step (actual)}} = \frac{K_s \cdot K_i \cdot \rho_E \cdot I_G}{L_C} \quad \text{(Step Voltage)}$$
+    <p style="font-size:0.85rem;margin-top:10px">
+      $I_G$ = Grid Fault Current (A) &nbsp;|&nbsp; $L_C$ = Total Conductor Length (m)<br>
+      $K_m, K_s, K_i$ = Geometric factors (จากรูปกริด)<br>
+      <strong>ในข้อสอบ มักจะกำหนด E<sub>actual</sub> มาให้</strong> หรือไม่ต้องคำนวณ แค่หา E<sub>allowable</sub> และเทียบ
+    </p>
   </div>
 
   <div class="formula-box" id="q4-cs">
@@ -871,9 +888,29 @@ F1─●            ●─F2
   </table>
 
   <div class="formula-box">
-    <div class="label">การตัดสิน Safety</div>
-    $$E_{\text{measured}} \le E_{\text{allowable}} \;\Rightarrow\; \checkmark\text{ SAFE}$$
-    $$E_{\text{measured}} > E_{\text{allowable}} \;\Rightarrow\; \times\text{ UNSAFE (ต้องปรับปรุง Ground Grid)}$$
+    <div class="label">การตัดสิน Safety — เปรียบเทียบ E<sub>actual</sub> vs E<sub>allowable</sub></div>
+    $$E_{\text{actual}} \le E_{\text{allowable}} \;\Rightarrow\; \checkmark\text{ SAFE}$$
+    $$E_{\text{actual}} > E_{\text{allowable}} \;\Rightarrow\; \times\text{ UNSAFE (ต้องปรับปรุง Ground Grid)}$$
+  </div>
+
+  <h3>ตัวอย่างการเปรียบเทียบ E<sub>actual</sub> vs E<sub>allowable</sub></h3>
+
+  <div class="example">
+    <div class="ex-title">ตัวอย่างสมมติ — สมมติว่าวัดได้ E<sub>actual,touch</sub> = 500 V, E<sub>actual,step</sub> = 1200 V</div>
+
+    <table>
+      <tr><th>กรณี</th><th>E<sub>allow,touch</sub></th><th>E<sub>act,touch</sub></th><th>Touch ผล</th><th>E<sub>allow,step</sub></th><th>E<sub>act,step</sub></th><th>Step ผล</th></tr>
+      <tr><td>ก (ไม่มีปูพื้น)</td><td>180.6 V</td><td>500 V</td><td style="color:var(--red);font-weight:700">✗ UNSAFE (500 &gt; 180.6)</td><td>251.2 V</td><td>1200 V</td><td style="color:var(--red);font-weight:700">✗ UNSAFE</td></tr>
+      <tr><td>ข (หินบด 10 cm)</td><td>651.6 V</td><td>500 V</td><td style="color:var(--green);font-weight:700">✓ SAFE (500 ≤ 651.6)</td><td>2135.2 V</td><td>1200 V</td><td style="color:var(--green);font-weight:700">✓ SAFE</td></tr>
+      <tr><td>ค (ยางมะตอย 5 cm)</td><td>1407.5 V</td><td>500 V</td><td style="color:var(--green);font-weight:700">✓ SAFE</td><td>5159.0 V</td><td>1200 V</td><td style="color:var(--green);font-weight:700">✓ SAFE</td></tr>
+    </table>
+
+    <div class="note" style="margin-top:14px">
+      <strong>ข้อสรุป:</strong> ถ้าสถานีนี้มี E<sub>actual,touch</sub> = 500 V และ E<sub>actual,step</sub> = 1200 V → <strong>ต้องปูหินบดอย่างน้อย 10 cm</strong> (กรณี ข) เพื่อให้ผ่านเกณฑ์ Safety
+    </div>
+    <div class="warn">
+      <strong>สังเกต:</strong> ค่า E<sub>actual</sub> คงที่ (ขึ้นกับ fault current และ grid geometry) แต่ E<sub>allowable</sub> เพิ่มได้ด้วยการปูวัสดุที่มี ρ<sub>s</sub> สูง → ทำให้ผ่านเกณฑ์ง่ายขึ้น
+    </div>
   </div>
 
   <div class="warn"><strong>$h_s$ ต้องเป็นหน่วยเมตรเสมอ</strong> — โจทย์มักให้เป็น cm → ต้องหาร 100 ก่อนแทนสูตร</div>
@@ -896,9 +933,16 @@ F1─●            ●─F2
     <div class="line">E<sub>touch</sub> = (1000 + 1.5·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 1.5·0.531·10000)·0.157/√1 = <span class="ans">1407.5 V</span></div>
     <div class="line">E<sub>step</sub> = (1000 + 6·C<sub>s</sub>·ρ<sub>s</sub>)·K/√t<sub>s</sub> = (1000 + 6·0.531·10000)·0.157/√1 = <span class="ans">5159.0 V</span></div>
 
-    <h5>การตัดสิน Safety</h5>
-    <div class="line">เปรียบเทียบ E<sub>measured</sub> (จากการวัดในสถานี) กับ E<sub>allowable</sub> ที่คำนวณได้:</div>
-    <div class="line">ถ้า E<sub>measured</sub> ≤ E<sub>allowable</sub> → <span class="ans">SAFE ✓</span> &nbsp;|&nbsp; ถ้า E<sub>measured</sub> &gt; E<sub>allowable</sub> → <span class="ans">UNSAFE ✗</span> (ต้องปรับปรุง)</div>
+    <h5>การตัดสิน Safety — เปรียบเทียบ E<sub>actual</sub> vs E<sub>allowable</sub></h5>
+    <div class="line">E<sub>allowable</sub> = E<sub>touch</sub>, E<sub>step</sub> ที่คำนวณจากสูตร IEEE 80 ด้านบน (= ค่าที่คนทนได้)</div>
+    <div class="line">E<sub>actual</sub> = แรงดันที่เกิดจริงตอน fault (โจทย์ให้มา หรือคำนวณจาก K<sub>m</sub>·K<sub>i</sub>·ρ<sub>E</sub>·I<sub>G</sub>/L<sub>C</sub>)</div>
+    <div class="line">ถ้า E<sub>actual</sub> ≤ E<sub>allowable</sub> → <span class="ans">SAFE ✓</span> &nbsp;|&nbsp; ถ้า E<sub>actual</sub> &gt; E<sub>allowable</sub> → <span class="ans">UNSAFE ✗</span> (ต้องปูวัสดุ ρ<sub>s</sub> สูงขึ้น)</div>
+
+    <h5>ตัวอย่างเปรียบเทียบ (สมมติ E<sub>actual,touch</sub> = 500 V, E<sub>actual,step</sub> = 1200 V)</h5>
+    <div class="line">กรณี ก: 500 &gt; 180.6 → <span class="ans">UNSAFE ✗</span> | 1200 &gt; 251.2 → <span class="ans">UNSAFE ✗</span></div>
+    <div class="line">กรณี ข: 500 ≤ 651.6 → <span class="ans">SAFE ✓</span> | 1200 ≤ 2135.2 → <span class="ans">SAFE ✓</span></div>
+    <div class="line">กรณี ค: 500 ≤ 1407.5 → <span class="ans">SAFE ✓</span> | 1200 ≤ 5159.0 → <span class="ans">SAFE ✓</span></div>
+    <div class="line">∴ <strong>ต้องปูหินบดอย่างน้อย 10 cm (กรณี ข)</strong> เพื่อให้ผ่านเกณฑ์ Safety</div>
   </div>
 </section>
 
