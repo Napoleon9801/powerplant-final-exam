@@ -229,115 +229,220 @@ MathJax = {
   <h2><span class="sec-num">1</span> Economic Load Dispatch — Priority List</h2>
   <div class="sec-sub">Ch6 · 5 คะแนน · เน้นคำนวณ + ตาราง Commitment</div>
 
-  <h3 id="q1-formula">สูตรหลัก</h3>
+  <h3 id="q1-formula">แนวคิดหลัก — เข้าใจก่อนจำสูตร</h3>
+
+  <div class="note">
+    โหลดไฟฟ้าเปลี่ยนตลอดวัน — ชั่วโมงเที่ยงคืนโหลดต่ำ ชั่วโมงกลางวันโหลดสูง<br>
+    <strong>Unit Commitment</strong> คือการตัดสินใจว่า <em>ชั่วโมงไหนควรเปิด/ปิด Generator ตัวไหน</em> เพื่อให้ต้นทุนรวมต่ำสุด<br>
+    <strong>Priority List</strong> คือวิธีที่ง่ายที่สุด: <em>จัดอันดับว่า Generator ตัวไหน "คุ้มค่า" ที่สุด แล้วเปิดตามลำดับ</em>
+  </div>
+
+  <h3>สูตรหลักที่ต้องจำ</h3>
 
   <div class="formula-box">
-    <div class="label">Cost Function &amp; Incremental Cost</div>
-    $$F_i(P_i) = \alpha_i + \beta_i P_i + \gamma_i P_i^2 \quad [\text{฿/h}]$$
+    <div class="label">① Cost Function — ต้นทุนเชื้อเพลิง (฿/h)</div>
+    $$F_i(P_i) = \alpha_i + \beta_i P_i + \gamma_i P_i^2$$
+    <p style="font-size:0.85rem;margin-top:6px">แทนค่า $P_i$ (MW) เข้าไป → ได้ต้นทุน ฿ ต่อชั่วโมง</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="label">② Priority Index σᵢ — เกณฑ์จัดลำดับ (฿/MWh)</div>
+    $$\sigma_i = \frac{F_i(P_{\text{test}})}{P_{\text{test}}}$$
+    <p style="font-size:0.85rem;margin-top:6px">
+      = ต้นทุนเฉลี่ยต่อ MWh ที่จุดทดสอบ<br>
+      <strong>ยิ่ง σ น้อย = ยิ่งถูก = เปิดก่อน (Priority สูงกว่า)</strong><br>
+      $P_{\text{test}}$ อาจเป็น $P_{\max}$, $P_{\text{avg}}$, หรือ $P_{\min}$ — อ่านโจทย์ให้ดี (ส่วนใหญ่ใช้ $P_{\max}$)
+    </p>
+  </div>
+
+  <div class="formula-box">
+    <div class="label">③ Incremental Cost IC (ใช้ใน Lambda Iteration)</div>
     $$\text{IC}_i = \frac{dF_i}{dP_i} = \beta_i + 2\gamma_i P_i \quad [\text{฿/MWh}]$$
+    $$\lambda^* = \text{IC}_1 = \text{IC}_2 = \cdots \quad \Rightarrow \quad P_i^* = \frac{\lambda^* - \beta_i}{2\gamma_i}$$
+    $$\sum P_i^* = P_D \quad \text{(Power Balance)}$$
   </div>
 
-  <div class="formula-box">
-    <div class="label">Priority Index (Fuel Cost-Based List)</div>
-    $$\sigma_i = \frac{F_i(P_{\text{test}})}{P_{\text{test}}} \quad [\text{฿/MWh}]$$
-    <p style="margin-top:8px;font-size:0.85rem">โดย $P_{\text{test}}$ อาจเป็น $P_{\max}$, $P_{\text{avg}} = \frac{P_{\min}+P_{\max}}{2}$, หรือ $P_{\min}$ — อ่านโจทย์ให้ดี</p>
-  </div>
-
-  <div class="formula-box">
-    <div class="label">Lambda Iteration (Economic Dispatch)</div>
-    $$\text{เงื่อนไข: } \lambda^* = \text{IC}_1 = \text{IC}_2 = \cdots = \text{IC}_n$$
-    $$P_i^* = \frac{\lambda^* - \beta_i}{2\gamma_i}, \quad P_{i,\min} \le P_i^* \le P_{i,\max}$$
-    $$\sum_{i=1}^{n} P_i^* = P_D \quad \text{(Power Balance)}$$
-  </div>
-
-  <h3>วิธีทำ Priority List (Step-by-Step)</h3>
+  <h3>วิธีทำ Priority List ทีละขั้น</h3>
 
   <div class="step">
     <div class="step-num">1</div>
-    <div class="step-body"><strong>อ่านโจทย์:</strong> โจทย์บอกให้ใช้ $P_{\text{test}}$ แบบไหน? (Max / Average / Min) ใช้ค่านั้นตลอด</div>
+    <div class="step-body"><strong>อ่านโจทย์:</strong> ใช้ $P_{\text{test}}$ แบบไหน? (Max / Avg / Min) → ใช้ค่านั้นตลอด</div>
   </div>
   <div class="step">
     <div class="step-num">2</div>
-    <div class="step-body"><strong>คำนวณ $F_i(P_{\text{test}})$</strong> สำหรับทุก unit แทนค่า $P_{\text{test}}$ ลงใน Cost Function</div>
+    <div class="step-body"><strong>แทน $P_{\text{test}}$ ลงใน $F_i$</strong> → ได้ต้นทุน ฿/h ของแต่ละ unit</div>
   </div>
   <div class="step">
     <div class="step-num">3</div>
-    <div class="step-body"><strong>คำนวณ $\sigma_i = F_i(P_{\text{test}}) / P_{\text{test}}$</strong> (Average Cost) สำหรับทุก unit</div>
+    <div class="step-body"><strong>คำนวณ $\sigma_i = F_i(P_{\text{test}}) \div P_{\text{test}}$</strong> → ได้ ฿/MWh ของแต่ละ unit</div>
   </div>
   <div class="step">
     <div class="step-num">4</div>
-    <div class="step-body"><strong>เรียง Priority:</strong> $\sigma_i$ ต่ำสุด = Priority 1 (เปิดก่อน)</div>
+    <div class="step-body"><strong>เรียงลำดับ:</strong> $\sigma$ น้อย → Priority สูง → เปิดก่อน</div>
   </div>
   <div class="step">
     <div class="step-num">5</div>
-    <div class="step-body"><strong>สร้างตาราง Unit Commitment:</strong> เพิ่ม Unit ทีละตัว บวก $P_{\min}$ และ $P_{\max}$ สะสม</div>
+    <div class="step-body"><strong>สร้างตาราง Unit Commitment</strong> (ดูวิธีด้านล่าง — คนส่วนใหญ่งงตรงนี้)</div>
   </div>
   <div class="step">
     <div class="step-num">6</div>
-    <div class="step-body">(ถ้าโจทย์ต้องการ) <strong>Lambda Iteration:</strong> ใช้ Units ที่ ON → แก้ระบบสมการ IC = $\lambda$ → หา $P_i^*$ → ตรวจ limit</div>
+    <div class="step-body">(ถ้าโจทย์ถาม) <strong>Lambda Iteration:</strong> หา $P_i^*$ ของ units ที่ ON → ตรวจ limit → fix ถ้าเกิน</div>
   </div>
 
-  <h3 id="q1-ex">ตัวอย่างจาก Lecture (3 Units)</h3>
+  <h3 id="q1-ex">ตัวอย่างจาก Lecture — 3 Units (อธิบายละเอียดทุกขั้น)</h3>
 
   <div class="example">
-    <div class="ex-title">โจทย์ — สถานีมีหน่วยผลิต 3 หน่วย</div>
+    <div class="ex-title">โจทย์</div>
     <table>
-      <tr><th>Unit</th><th>$P_{\min}$ (MW)</th><th>$P_{\max}$ (MW)</th><th>Cost Function (฿/h)</th></tr>
+      <tr><th>Unit</th><th>$P_{\min}$ (MW)</th><th>$P_{\max}$ (MW)</th><th>Cost Function $F_i$ (฿/h)</th></tr>
       <tr><td>1</td><td>150</td><td>600</td><td>$F_1 = 510 + 7.2P_1 + 0.00142P_1^2$</td></tr>
       <tr><td>2</td><td>100</td><td>400</td><td>$F_2 = 310 + 7.85P_2 + 0.00194P_2^2$</td></tr>
       <tr><td>3</td><td>50</td><td>200</td><td>$F_3 = 78 + 7.97P_3 + 0.00482P_3^2$</td></tr>
     </table>
-
-    <h4>Step 1–3: คำนวณ $\sigma_i$ ที่ 3 จุด</h4>
-    <p>$P_{\text{avg},1} = (150+600)/2 = 375\text{ MW}$, $\quad P_{\text{avg},2} = 250\text{ MW}$, $\quad P_{\text{avg},3} = 125\text{ MW}$</p>
-
-    <div class="formula-box">
-      $$\sigma_i^{\text{max}} = \frac{F_i(P_{i,\max})}{P_{i,\max}}, \quad \sigma_i^{\text{avg}} = \frac{F_i(P_{i,\text{avg}})}{P_{i,\text{avg}}}, \quad \sigma_i^{\text{min}} = \frac{F_i(P_{i,\min})}{P_{i,\min}}$$
-    </div>
-
-    <table>
-      <tr><th>Unit</th><th>$\sigma$ @ $P_{\max}$ (฿/MWh)</th><th>$\sigma$ @ $P_{\text{avg}}$ (฿/MWh)</th><th>$\sigma$ @ $P_{\min}$ (฿/MWh)</th></tr>
-      <tr><td>1</td><td><strong>8.90</strong> ← ต่ำสุด</td><td><strong>9.09</strong> ← ต่ำสุด</td><td>10.81</td></tr>
-      <tr><td>2</td><td>9.40</td><td>9.58</td><td>11.14</td></tr>
-      <tr><td>3</td><td>9.32</td><td>9.20</td><td><strong>9.77</strong> ← ต่ำสุด</td></tr>
-      <tr><td><strong>Priority</strong></td><td><strong>1 → 3 → 2</strong></td><td><strong>1 → 3 → 2</strong></td><td><strong>3 → 1 → 2</strong></td></tr>
-    </table>
-
-    <h4>Step 5: ตาราง Unit Commitment (Priority: U1 → U3 → U2)</h4>
-    <table>
-      <tr><th>State</th><th>Units ON</th><th>$\Sigma P_{\min}$ (MW)</th><th>$\Sigma P_{\max}$ (MW)</th></tr>
-      <tr><td>a</td><td>U1 + U3 + U2</td><td>150+50+100 = 300</td><td>600+200+400 = 1200</td></tr>
-      <tr><td>b</td><td>U1 + U3</td><td>150+50 = 200</td><td>600+200 = 800</td></tr>
-      <tr><td>c</td><td>U1</td><td>150</td><td>600</td></tr>
-    </table>
-
-    <h4>Step 6: Lambda Iteration (Demand = 1000 MW, ไม่มี limit เกิน)</h4>
-    <p>จาก $\text{IC}_1 = \text{IC}_2$: $\quad 5.3 + 0.008P_1 = 5.5 + 0.012P_2 \;\Rightarrow\; 0.008P_1 - 0.012P_2 = 0.2 \quad\cdots(2)$</p>
-    <p>จาก $\text{IC}_2 = \text{IC}_3$: $\quad 5.5 + 0.012P_2 = 5.8 + 0.018P_3 \;\Rightarrow\; 0.012P_2 - 0.018P_3 = 0.3 \quad\cdots(3)$</p>
-    <p>แก้ (1)+(2)+(3): $\quad P_1 + P_2 + P_3 = 1000 \quad\cdots(1)$</p>
-    <div style="text-align:center;margin:10px 0">
-      <span class="result">$P_1 = 494.74\text{ MW},\quad P_2 = 313.16\text{ MW},\quad P_3 = 192.11\text{ MW}$</span>
-    </div>
-    <div style="text-align:center">
-      <span class="result">$\lambda^* = 9.258\text{ ฿/MWh}$</span>
-    </div>
+    <p style="font-size:0.88rem;margin-top:8px">จงหา Priority List และ Unit Commitment Table (ใช้ $P_{\text{test}} = P_{\max}$)</p>
   </div>
 
-  <h3>Lambda Iteration เมื่อมี Limit เกิน (1600 MW)</h3>
   <div class="example">
-    <div class="ex-title">กรณี $P_1^* = 778.9 > 750 = P_{1,\max}$ → Fix ที่ $P_{1,\max}$</div>
-    <p>Fix $P_1 = 750$ MW → เหลือ Demand = $1600 - 750 = 850$ MW → แจกให้ U2, U3 ใหม่</p>
-    <p>แก้ $P_2 + P_3 = 850$ และ $\text{IC}_2 = \text{IC}_3$ ใหม่อีกครั้ง:</p>
-    <div style="text-align:center;margin:10px 0">
-      <span class="result">$P_1 = 750\text{ MW (fixed)},\quad P_2 = 520\text{ MW},\quad P_3 = 330\text{ MW}$</span>
+    <div class="ex-title">Step 2 — คำนวณ F(P_max) ของแต่ละ unit</div>
+
+    <h4>Unit 1 — แทน $P_1 = 600$ MW</h4>
+    $$F_1(600) = 510 + 7.2(600) + 0.00142(600)^2$$
+    $$= 510 + 4320 + 0.00142 \times 360000$$
+    $$= 510 + 4320 + 511.2 = \mathbf{5341.2 \text{ ฿/h}}$$
+
+    <h4>Unit 2 — แทน $P_2 = 400$ MW</h4>
+    $$F_2(400) = 310 + 7.85(400) + 0.00194(400)^2$$
+    $$= 310 + 3140 + 0.00194 \times 160000$$
+    $$= 310 + 3140 + 310.4 = \mathbf{3760.4 \text{ ฿/h}}$$
+
+    <h4>Unit 3 — แทน $P_3 = 200$ MW</h4>
+    $$F_3(200) = 78 + 7.97(200) + 0.00482(200)^2$$
+    $$= 78 + 1594 + 0.00482 \times 40000$$
+    $$= 78 + 1594 + 192.8 = \mathbf{1864.8 \text{ ฿/h}}$$
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Step 3 — คำนวณ Priority Index σᵢ = F(P_max) ÷ P_max</div>
+    $$\sigma_1 = \frac{5341.2}{600} = \mathbf{8.90 \text{ ฿/MWh}}$$
+    $$\sigma_2 = \frac{3760.4}{400} = \mathbf{9.40 \text{ ฿/MWh}}$$
+    $$\sigma_3 = \frac{1864.8}{200} = \mathbf{9.32 \text{ ฿/MWh}}$$
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Step 4 — เรียงลำดับจาก σ น้อยไปมาก</div>
+    <table>
+      <tr><th>Priority</th><th>Unit</th><th>σ (฿/MWh)</th><th>เหตุผล</th></tr>
+      <tr><td style="color:var(--green);font-weight:700">1 (เปิดก่อน)</td><td>Unit 1</td><td>8.90</td><td>ถูกที่สุด</td></tr>
+      <tr><td>2</td><td>Unit 3</td><td>9.32</td><td>ถูกเป็นอันดับ 2</td></tr>
+      <tr><td style="color:var(--red)">3 (เปิดหลังสุด)</td><td>Unit 2</td><td>9.40</td><td>แพงที่สุด</td></tr>
+    </table>
+    <div style="text-align:center;margin-top:10px">
+      <span class="result">Priority List = Unit 1 → Unit 3 → Unit 2</span>
+    </div>
+    <div class="warn" style="margin-top:12px">
+      <strong>ทำไม Unit 3 ก่อน Unit 2?</strong> เพราะ σ₃ = 9.32 &lt; σ₂ = 9.40 แม้ Unit 2 จะมีกำลังสูงกว่า แต่ต้นทุนเฉลี่ยแพงกว่า Unit 3
     </div>
   </div>
 
-  <div class="warn">
-    <strong>จุดระวัง:</strong> หน่วยใดถูก fix → ต้องแก้สมการ balance และ IC = $\lambda$ ใหม่สำหรับ units ที่เหลือ ห้าม reuse ค่า $\lambda$ เดิม
+  <div class="example">
+    <div class="ex-title">Step 5 — สร้างตาราง Unit Commitment</div>
+
+    <div class="note" style="margin-bottom:14px">
+      <strong>หลักการสร้างตาราง:</strong><br>
+      เพิ่ม unit ตามลำดับ Priority ทีละตัว<br>
+      • <strong>Max MW</strong> ของแต่ละ state = ผลรวม $P_{\max}$ ของทุก unit ที่ ON<br>
+      • <strong>Min MW</strong> ของ state ล่างสุด = $P_{\min}$ ของ unit นั้น<br>
+      • <strong>Min MW</strong> ของ state ที่สูงขึ้น = <u>Max MW ของ state ก่อนหน้า</u>
+    </div>
+
+    <table>
+      <tr><th>State</th><th>Units ON</th><th>Min MW</th><th>Max MW</th><th>วิธีคิด Min</th></tr>
+      <tr><td><strong>c</strong></td><td>Unit 1</td><td>150</td><td>600</td><td>$P_{1,\min} = 150$</td></tr>
+      <tr><td><strong>b</strong></td><td>Unit 1 + Unit 3</td><td>600</td><td>800</td><td>= Max ของ state c = 600</td></tr>
+      <tr><td><strong>a</strong></td><td>Unit 1 + Unit 3 + Unit 2</td><td>800</td><td>1200</td><td>= Max ของ state b = 800</td></tr>
+    </table>
+
+    <div class="warn">
+      <strong>ผิดบ่อยมาก:</strong> Min MW ของ state b <u>ไม่ใช่</u> 150+50=200 แต่คือ <strong>600</strong> (Max ของ state c)<br>
+      เหตุผล: เราจะเปิด Unit 3 ก็ต่อเมื่อโหลดเกิน 600 MW แล้วเท่านั้น (Unit 1 คนเดียวรับไม่ไหวแล้ว)
+    </div>
+
+    <h4 style="margin-top:18px">วิธีอ่านตาราง — ตัดสินใจ State จากโหลด</h4>
+    <table>
+      <tr><th>ถ้าโหลด (MW)</th><th>ใช้ State</th><th>เปิด Unit ไหน</th></tr>
+      <tr><td>150 – 600</td><td>c</td><td>Unit 1 เท่านั้น</td></tr>
+      <tr><td>601 – 800</td><td>b</td><td>Unit 1 + Unit 3</td></tr>
+      <tr><td>801 – 1200</td><td>a</td><td>Unit 1 + Unit 3 + Unit 2</td></tr>
+    </table>
+    <p style="font-size:0.88rem;margin-top:8px">ตัวอย่าง: โหลด = 700 MW → อยู่ใน 601–800 → ใช้ state b → เปิด Unit 1 และ Unit 3</p>
   </div>
+
+  <h3>Step 6 — Lambda Iteration (Economic Dispatch)</h3>
+
+  <div class="example">
+    <div class="ex-title">ตัวอย่าง: Demand = 900 MW → State a (Unit 1+3+2 ทั้งหมด)</div>
+
+    <h4>IC ของแต่ละ Unit</h4>
+    $$\text{IC}_1 = 7.2 + 2(0.00142)P_1 = 7.2 + 0.00284P_1$$
+    $$\text{IC}_2 = 7.85 + 2(0.00194)P_2 = 7.85 + 0.00388P_2$$
+    $$\text{IC}_3 = 7.97 + 2(0.00482)P_3 = 7.97 + 0.00964P_3$$
+
+    <h4>ตั้งสมการ IC₁ = IC₂ = IC₃ = λ → แสดง P ในรูป λ</h4>
+    $$P_1 = \frac{\lambda - 7.2}{0.00284}, \quad P_2 = \frac{\lambda - 7.85}{0.00388}, \quad P_3 = \frac{\lambda - 7.97}{0.00964}$$
+
+    <h4>แทนลง Power Balance: $P_1 + P_2 + P_3 = 900$</h4>
+    $$\frac{\lambda - 7.2}{0.00284} + \frac{\lambda - 7.85}{0.00388} + \frac{\lambda - 7.97}{0.00964} = 900$$
+    $$352.11(\lambda - 7.2) + 257.73(\lambda - 7.85) + 103.73(\lambda - 7.97) = 900$$
+    $$713.57\lambda - (2535.2 + 2023.2 + 827.0) = 900$$
+    $$713.57\lambda = 900 + 5385.4 = 6285.4$$
+    <div style="text-align:center;margin:10px 0">
+      <span class="result">$\lambda^* \approx 8.81 \text{ ฿/MWh}$</span>
+    </div>
+
+    <h4>หา P จาก λ*</h4>
+    $$P_1 = \frac{8.81 - 7.2}{0.00284} \approx 567 \text{ MW} \quad (150 \le 567 \le 600 \ \checkmark)$$
+    $$P_2 = \frac{8.81 - 7.85}{0.00388} \approx 247 \text{ MW} \quad (100 \le 247 \le 400 \ \checkmark)$$
+    $$P_3 = \frac{8.81 - 7.97}{0.00964} \approx 87 \text{ MW} \quad (50 \le 87 \le 200 \ \checkmark)$$
+    <div style="text-align:center;margin:10px 0">
+      <span class="result">$567 + 247 + 87 \approx 901 \approx 900 \text{ MW} \quad \checkmark$</span>
+    </div>
+    <div class="note">ไม่มี unit ไหน hit limit → ไม่ต้อง fix → เสร็จสิ้น</div>
+  </div>
+
+  <h3>กรณีพิเศษ — ถ้า P* เกิน Limit</h3>
+  <div class="example">
+    <div class="ex-title">หลักการ: Fix unit ที่ hit limit แล้ว solve ใหม่</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">คำนวณ $P_i^* = (\lambda - \beta_i) / 2\gamma_i$ ตามปกติ</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">ถ้า $P_i^* > P_{i,\max}$ → Fix $P_i = P_{i,\max}$; ถ้า $P_i^* < P_{i,\min}$ → Fix $P_i = P_{i,\min}$</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">Demand ใหม่ = Demand เดิม − $P_{\text{fixed}}$ → แก้สมการใหม่สำหรับ units ที่เหลือ</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">ทำซ้ำจนไม่มี unit ไหน hit limit</div>
+    </div>
+    <div class="warn">ห้าม reuse ค่า $\lambda$ เดิมหลัง fix — ต้องแก้สมการหา $\lambda$ ใหม่ทุกครั้ง</div>
+  </div>
+
+  <h3>สรุปสิ่งที่งงบ่อย</h3>
+  <table>
+    <tr><th>ข้อสงสัย</th><th>คำตอบ</th></tr>
+    <tr><td>σ คืออะไร?</td><td>ต้นทุนเฉลี่ย ฿/MWh ที่จุด test — ยิ่งน้อยยิ่งดี</td></tr>
+    <tr><td>ทำไมใช้ P_max เป็น test?</td><td>ถ้าจะเปิด unit ควรเดินเต็มกำลัง — ประเมินที่ worst case</td></tr>
+    <tr><td>Min MW ใน UC Table มาจากไหน?</td><td>= Max MW ของ state ก่อนหน้า (ไม่ใช่ผลรวม P_min!)</td></tr>
+    <tr><td>Priority 1→3→2 เพราะอะไร?</td><td>σ₁=8.90 &lt; σ₃=9.32 &lt; σ₂=9.40</td></tr>
+    <tr><td>IC กับ σ ต่างกันอย่างไร?</td><td>IC = ต้นทุน marginal (ฟังก์ชัน P) / σ = ต้นทุนเฉลี่ย (ค่าเดียว)</td></tr>
+  </table>
+
   <div class="warn">
-    <strong>ผลลัพธ์ Priority อาจต่างกัน</strong> ขึ้นกับว่าใช้ $P_{\max}$, $P_{\text{avg}}$, หรือ $P_{\min}$ เป็น test point — อ่านโจทย์ให้ชัดเจน
+    <strong>ผลลัพธ์ Priority อาจต่างกัน</strong> ขึ้นกับว่าใช้ $P_{\max}$, $P_{\text{avg}}$, หรือ $P_{\min}$ — ตัวอย่างนี้ที่ P_min ลำดับเปลี่ยนเป็น 3→1→2 อ่านโจทย์ให้ชัดก่อนเสมอ
   </div>
 </section>
 
